@@ -2,6 +2,7 @@ package edu.oregonState.scheduler.resources;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -21,6 +22,7 @@ import edu.oregonState.scheduler.model.calculation.CalculationType;
 
 @Path("/schedule")
 @Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class ScheduleResource {
 	private final ScheduleModel scheduleModel;
 	private final CalcTypeMap calcTypeMap = new CalcTypeMap();
@@ -35,7 +37,7 @@ public class ScheduleResource {
 //public Schedule getProcessedScedule(@QueryParam("querySchedule") Optional<Schedule> querySchedule)
 	@GET
 	@Timed
-    public Schedule getProcessedScedule(@QueryParam("schedule") Schedule schedule, @QueryParam("queryType") Optional<String> queryType) {
+    public Schedule getProcessedScedule(Schedule schedule, @QueryParam("queryType") Optional<String> queryType) {
 		CalculationType calcType = calcTypeMap.getCalculationType(queryType.get());
 		return scheduleModel.calculateSchedule(calcType,schedule);//TODO: add input later
     }
