@@ -1,6 +1,5 @@
 package edu.oregonState.scheduler.provider;
 
-import java.util.List;
 
 import edu.oregonState.scheduler.core.CalendarEvent;
 import edu.oregonState.scheduler.core.Schedule;
@@ -8,7 +7,6 @@ import edu.oregonState.scheduler.user.Authentication;
 
 public class StubScheduleProvider implements ScheduleProvider {
 
-	@Override
 	public Schedule getSchedule(String userID, Authentication authentication) {
 		return makeSchedule();
 	}

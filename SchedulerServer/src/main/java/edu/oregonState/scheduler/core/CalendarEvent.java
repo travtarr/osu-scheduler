@@ -5,6 +5,8 @@ import java.util.Arrays;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class CalendarEvent {
 	
 	@Min(value=1)
@@ -163,83 +165,102 @@ public class CalendarEvent {
 	}
 
 
-
+    @JsonProperty
 	public Integer getStartMonth() {
 		return startMonth;
 	}
-
+    
+    @JsonProperty
 	public void setStartMonth(Integer startMonth) {
 		this.startMonth = startMonth;
 	}
 
+    @JsonProperty
 	public Integer getStartDay() {
 		return startDay;
 	}
 
+    @JsonProperty
 	public void setStartDay(Integer startDay) {
 		this.startDay = startDay;
 	}
 
+    @JsonProperty
 	public Integer getStartHour() {
 		return startHour;
 	}
 
+    @JsonProperty
 	public void setStartHour(Integer startHour) {
 		this.startHour = startHour;
 	}
 
+    @JsonProperty
 	public Integer getStartMinute() {
 		return startMinute;
 	}
 
+    @JsonProperty
 	public void setStartMinute(Integer startMinute) {
 		this.startMinute = startMinute;
 	}
 
+    @JsonProperty
 	public Integer getEndMonth() {
 		return endMonth;
 	}
 
+    @JsonProperty
 	public void setEndMonth(Integer endMonth) {
 		this.endMonth = endMonth;
 	}
 
+    @JsonProperty
 	public Integer getEndDay() {
 		return endDay;
 	}
 
+    @JsonProperty
 	public void setEndDay(Integer endDay) {
 		this.endDay = endDay;
 	}
 
+    @JsonProperty
 	public Integer getEndHour() {
 		return endHour;
 	}
 
+    @JsonProperty
 	public void setEndHour(Integer endHour) {
 		this.endHour = endHour;
 	}
 
+    @JsonProperty
 	public Integer getEndMinute() {
 		return endMinute;
 	}
 
+    @JsonProperty
 	public void setEndMinute(Integer endMinute) {
 		this.endMinute = endMinute;
 	}
 
+    @JsonProperty
 	public Integer getTimeZoneOffset() {
 		return TimeZoneOffset;
 	}
 
+    @JsonProperty
 	public void setTimeZoneOffset(Integer timeZoneOffset) {
 		TimeZoneOffset = timeZoneOffset;
 	}
 
+    @JsonProperty
 	public String[] getUserIds() {
 		return userIds;
 	}
 
+    @JsonProperty
 	public void setUserIds(String[] userIds) {
 		this.userIds = userIds;
 	}

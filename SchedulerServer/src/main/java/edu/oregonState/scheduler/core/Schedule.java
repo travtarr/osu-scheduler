@@ -2,6 +2,8 @@ package edu.oregonState.scheduler.core;
 
 import java.util.Arrays;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Schedule {
 	private CalendarEvent events[];
 
@@ -10,10 +12,12 @@ public class Schedule {
 		this.events = events;
 	}
 
+    @JsonProperty
 	public CalendarEvent[] getEvents() {
 		return events;
 	}
 
+    @JsonProperty
 	public void setEvents(CalendarEvent[] events) {
 		this.events = events;
 	}

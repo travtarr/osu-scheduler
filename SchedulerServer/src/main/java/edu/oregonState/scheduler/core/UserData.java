@@ -1,5 +1,7 @@
 package edu.oregonState.scheduler.core;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class UserData {
 	private final String userID;
 	private final String googleID;
@@ -23,22 +25,27 @@ public class UserData {
 		this.googleAuthentication = googleAuthentication;
 	}
 
+    @JsonProperty
 	public String getProfessorName() {
 		return professorName;
 	}
 
+    @JsonProperty
 	public void setProfessorName(String professorName) {
 		this.professorName = professorName;
 	}
 
+    @JsonProperty
 	public String getUserID() {
 		return userID;
 	}
 
+    @JsonProperty
 	public String getGoogleID() {
 		return googleID;
 	}
 
+    @JsonProperty
 	public String getGoogleAuthentication() {
 		return googleAuthentication;
 	}	
