@@ -10,7 +10,7 @@ import com.codahale.metrics.annotation.Timed;
 import edu.oregonState.scheduler.MainFactory;
 import edu.oregonState.scheduler.core.CalendarEvent;
 import edu.oregonState.scheduler.core.Schedule;
-import edu.oregonState.scheduler.core.UserData;
+import edu.oregonState.scheduler.core.UserDTO;
 import edu.oregonState.scheduler.model.ScheduleModel;
 
 @Path("/schedule")
@@ -28,7 +28,7 @@ public class UserResource {
 //public Schedule getProcessedScedule(@QueryParam("querySchedule") Optional<Schedule> querySchedule)
 	@POST
 	@Timed
-    public void submitUserData(UserData userData) {        
+    public void submitUserData(UserDTO userData) {        
         scheduleModel.addUser(userData);
     }
 	

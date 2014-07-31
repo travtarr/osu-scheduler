@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import edu.oregonState.scheduler.core.UserData;
+import edu.oregonState.scheduler.core.UserDTO;
 import edu.oregonState.scheduler.model.ScheduleModel;
 
 public class UserResourceTest {
@@ -23,7 +23,7 @@ public class UserResourceTest {
 	@Test
 	public void submitUserData_validInput_passesToScheduleModel() {
 		//arrange
-		UserData userData = new UserData("davidsbr","bkdson","rkljg34QA_awef");
+		UserDTO userData = new UserDTO("davidsbr","bkdson","rkljg34QA_awef");
 		
 		//act
 		target.submitUserData(userData);

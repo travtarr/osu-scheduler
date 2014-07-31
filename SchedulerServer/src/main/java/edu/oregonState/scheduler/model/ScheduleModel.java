@@ -9,7 +9,7 @@ import java.util.Set;
 
 import edu.oregonState.scheduler.core.CalendarEvent;
 import edu.oregonState.scheduler.core.Schedule;
-import edu.oregonState.scheduler.core.UserData;
+import edu.oregonState.scheduler.core.UserDTO;
 import edu.oregonState.scheduler.model.calculation.CalculationStrategy;
 import edu.oregonState.scheduler.model.calculation.CalculationStrategyFactory;
 import edu.oregonState.scheduler.model.calculation.CalculationType;
@@ -33,7 +33,7 @@ public class ScheduleModel {
 		this.calculationStrategyFactory = calculationStrategyFactory;
 	}
 
-	public void addUser(UserData userData) {
+	public void addUser(UserDTO userData) {
 		userAuthenticationRepository.addUser(userData);		
 	}
 

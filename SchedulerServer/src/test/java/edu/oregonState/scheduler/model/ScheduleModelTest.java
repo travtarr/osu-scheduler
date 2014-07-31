@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import edu.oregonState.scheduler.core.CalendarEvent;
 import edu.oregonState.scheduler.core.Schedule;
-import edu.oregonState.scheduler.core.UserData;
+import edu.oregonState.scheduler.core.UserDTO;
 import edu.oregonState.scheduler.model.calculation.CalculationStrategy;
 import edu.oregonState.scheduler.model.calculation.CalculationStrategyFactory;
 import edu.oregonState.scheduler.model.calculation.CalculationType;
@@ -48,7 +48,7 @@ public class ScheduleModelTest {
 	@Test
 	public void addUser_validData_addsToUserRepo() {
 		//arrange
-		UserData userData = new UserData("testID", "testGoogleID", "testGoogleAuth");
+		UserDTO userData = new UserDTO("testID", "testGoogleID", "testGoogleAuth");
 		
 		//act
 		target.addUser(userData);

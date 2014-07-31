@@ -1,10 +1,26 @@
 package edu.oregonState.scheduler;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 import io.dropwizard.Configuration;
+import io.dropwizard.db.DataSourceFactory;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import org.hibernate.validator.constraints.NotEmpty;
 
-public class SchedulerConfiguration extends Configuration {
+public class SchedulerConfiguration extends Configuration {	
+	
+	@Valid
+	@NotNull
+	@JsonProperty("database")
+	private final DataSourceFactory database= new DataSourceFactory();
+	
+    public DataSourceFactory getDataSourceFactory() {
+        return database;
+    }	
+	
     @NotEmpty
     private String template;
 
