@@ -73,15 +73,10 @@ public class OSUCatalogScheduleProvider implements ScheduleProvider {
 	 */
 	private void initDB() {
 
-		// final String address = "oniddb.cws.oregonstate.edu:3306";
-		// final String dbName = "tarrt-db";
-		// final String username = "tarrt-db";
-		// final String password = "Q4Nx0vSLV9mUO9KA";
-
 		final String address = "localhost:3306";
-		final String dbName = "test";
-		final String username = "root";
-		final String password = "";
+		final String dbName = "schedule";
+		final String username = "travis";
+		final String password = "5TB232ayq34q";
 
 		sql = new SQLCatalogResource(username, password, address, dbName);
 	}
