@@ -9,22 +9,22 @@ public class OSUCatalogScheduleProviderTest {
 
 	OSUCatalogScheduleProvider parser;
 	
-	
+	@Test
 	public void testOSUCatalogScheduleProvider() {
 		parser = new OSUCatalogScheduleProvider();
 	}
 
-	
+	@Test
 	public void testGetScheduleStringAuthentication() {
 		fail("Not yet implemented");
 	}
 
-	
+	@Test
 	public void testParseSchedule() {
 		parser.parseSchedule();
 	}
 
-	
+	@Test
 	public void testGetScheduleString() {
 		fail("Not yet implemented");
 	}
