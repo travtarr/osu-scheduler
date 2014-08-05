@@ -9,7 +9,7 @@ public class OSUCatalogScheduleProviderTest {
 
 	OSUCatalogScheduleProvider parser;
 	
-	@Before
+	
 	public void testOSUCatalogScheduleProvider() {
 		parser = new OSUCatalogScheduleProvider();
 	}
