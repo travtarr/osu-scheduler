@@ -14,7 +14,12 @@
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-hibernate</artifactId>
             <version>0.7.0</version>
-        </dependency>	    
+        </dependency>	   
+   		<dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-jdbi</artifactId>
+            <version>0.7.0</version>
+        </dependency>	         
 	    <dependency>
 	    	<groupId>org.mockito</groupId>
 	    	<artifactId>mockito-all</artifactId>
@@ -30,7 +35,22 @@
 		  	<groupId>com.google.oauth-client</groupId>
 		  	<artifactId>google-oauth-client</artifactId>
  			<version>1.18.0-rc</version>
-		</dependency>		
+		</dependency>
+	  	<dependency>
+	  		<groupId>mysql</groupId>
+	  		<artifactId>mysql-connector-java</artifactId>
+	  		<version>5.1.31</version>
+	  	</dependency>
+		<dependency>
+			<groupId>com.google.apis</groupId>
+			<artifactId>google-api-services-calendar</artifactId>
+			<version>v3-rev88-1.19.0</version>
+		</dependency>	  	
+	  	<dependency>
+		  <groupId>com.google.api-client</groupId>
+		  <artifactId>google-api-client-gson</artifactId>
+		  <version>1.18.0-rc</version>
+		</dependency>
 	</dependencies>
 
 	<build>

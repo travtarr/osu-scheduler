@@ -40,8 +40,6 @@ public class CalendarEvent {
 	private Integer TimeZoneOffset;
 	
 	private String[] userIds;
-
-	
 	
 	public CalendarEvent(Integer startMonth, Integer startDay,
 			Integer startHour, Integer startMinute, Integer endMonth,

@@ -13,12 +13,23 @@ import org.hibernate.type.StringType;
 import java.util.List;
 
 public class UserDAO extends AbstractDAO<User> {
-    public UserDAO(SessionFactory factory) {
+	private SessionFactory userSessionFactory;
+    public UserDAO(SessionFactory factory) {    	
         super(factory);
+        userSessionFactory = factory;
     }
 
     public Optional<User> findById(Long id) {
-        return Optional.fromNullable(get(id));
+    	boolean managed = false;
+    	if(!this.currentSession().isOpen()){
+    		userSessionFactory.openSession();
+    		managed = true;
+    	}
+        Optional<User> user = Optional.fromNullable(get(id));
+        if (managed){
+        	userSessionFactory.getCurrentSession().close();
+        }        
+        return user;
     }
 
     public User create(User person) {

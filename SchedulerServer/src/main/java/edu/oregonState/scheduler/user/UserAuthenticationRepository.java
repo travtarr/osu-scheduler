@@ -1,8 +1,9 @@
 package edu.oregonState.scheduler.user;
 
 import edu.oregonState.scheduler.core.UserDTO;
+import edu.oregonState.scheduler.data.UserDAO;
 
-public class UserAuthenticationRepository {
-	public void addUser(UserDTO userData){}
-	public Authentication getAuthentication(String userID) { return new Authentication(null);}
+public interface UserAuthenticationRepository {
+
+	public Authentication getAuthentication(String userID);
 }

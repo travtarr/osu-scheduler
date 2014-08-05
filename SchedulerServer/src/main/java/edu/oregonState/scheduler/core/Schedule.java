@@ -11,6 +11,10 @@ public class Schedule {
 		super();
 		this.events = events;
 	}
+	
+	public Schedule(){
+		//needed for jackson
+	}
 
     @JsonProperty
 	public CalendarEvent[] getEvents() {

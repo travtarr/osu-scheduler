@@ -2,16 +2,18 @@ package edu.oregonState.scheduler.user;
 
 import javax.persistence.*;
 
+import edu.oregonState.scheduler.core.UserDTO;
+
 @Entity
 @Table(name = "userData")
 @NamedQueries({
     @NamedQuery(
         name = "edu.oregonState.scheduler.user.findAll",
-        query = "SELECT p FROM userData p"
+        query = "SELECT p FROM User p"
     ),
     @NamedQuery(
         name = "edu.oregonState.scheduler.user.findById",
-        query = "SELECT p FROM userData p WHERE p.userID = :userID"
+        query = "SELECT p FROM User p WHERE p.userID = :userID"
     )
 })
 
@@ -25,6 +27,16 @@ public class User {
 	private String googleID;
 	@Column(name="googleToken",nullable=false)
 	private String googleToken;
+	
+	public User(){
+		
+	}
+	
+	public User(UserDTO userData) {
+		setUserID(userData.getUserID());
+		setGoogleID(userData.getGoogleID());
+		setGoogleToken(userData.getGoogleAuthentication());
+	}
 	public String getUserID() {
 		return userID;
 	}
@@ -42,7 +54,5 @@ public class User {
 	}
 	public void setGoogleToken(String googleToken) {
 		this.googleToken = googleToken;
-	}
-	
-	
+	}	
 }

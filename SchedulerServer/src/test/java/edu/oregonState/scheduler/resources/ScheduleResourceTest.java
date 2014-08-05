@@ -3,6 +3,8 @@ package edu.oregonState.scheduler.resources;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+import java.io.IOException;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -40,7 +42,7 @@ public class ScheduleResourceTest {
 	}
 
 	@Test (expected = IllegalArgumentException.class)
-	public void getProcessedScedule_illegalCalcType_throwsException() {
+	public void getProcessedScedule_illegalCalcType_throwsException() throws IOException {
 		//arrange
 		
 		//act
@@ -49,7 +51,7 @@ public class ScheduleResourceTest {
 	}	
 	
 	@Test
-	public void getProcessedScedule_noArgs_returnsASchedule() {
+	public void getProcessedScedule_noArgs_returnsASchedule() throws IOException {
 		//arrange
 		when(mockModel.calculateSchedule(CalculationType.GivenTimeRangeAndUsersGetTimeSlotsAllAreAvailable, mockSchedule)).thenReturn(expected);
 		//act
@@ -60,7 +62,7 @@ public class ScheduleResourceTest {
 	}
 
 	@Test
-	public void getProcessedScedule_noArgs_hasModelCalculateASchedule() {
+	public void getProcessedScedule_noArgs_hasModelCalculateASchedule() throws IOException {
 		//arrange
 		
 		//act

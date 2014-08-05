@@ -3,11 +3,13 @@ package edu.oregonState.scheduler.core;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class UserDTO {
-	private final String userID;
-	private final String googleID;
-	private String professorName;
-	private final String googleAuthentication;
+	private String userID;
+	private String googleID;
+	private String googleAuthentication;
 	
+	public  UserDTO(){
+		//dummy for jersey
+	}
 	public UserDTO(String userID, String googleID,
 			String googleAuthentication) {
 		super();
@@ -15,25 +17,7 @@ public class UserDTO {
 		this.googleID = googleID;
 		this.googleAuthentication = googleAuthentication;
 	}
-	
-	public UserDTO(String userID, String googleID, String professorName,
-			String googleAuthentication) {
-		super();
-		this.userID = userID;
-		this.googleID = googleID;
-		this.professorName = professorName;
-		this.googleAuthentication = googleAuthentication;
-	}
 
-    @JsonProperty
-	public String getProfessorName() {
-		return professorName;
-	}
-
-    @JsonProperty
-	public void setProfessorName(String professorName) {
-		this.professorName = professorName;
-	}
 
     @JsonProperty
 	public String getUserID() {
@@ -48,7 +32,25 @@ public class UserDTO {
     @JsonProperty
 	public String getGoogleAuthentication() {
 		return googleAuthentication;
+	}
+
+    @JsonProperty
+	public void setUserID(String userID) {
+		this.userID = userID;
+	}
+
+    @JsonProperty
+	public void setGoogleID(String googleID) {
+		this.googleID = googleID;
+	}
+
+    @JsonProperty
+	public void setGoogleAuthentication(String googleAuthentication) {
+		this.googleAuthentication = googleAuthentication;
 	}	
+    
+    
 	
+    
 	
 }

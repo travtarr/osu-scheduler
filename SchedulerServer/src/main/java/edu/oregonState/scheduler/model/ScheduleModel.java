@@ -1,5 +1,6 @@
 package edu.oregonState.scheduler.model;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -33,11 +34,7 @@ public class ScheduleModel {
 		this.calculationStrategyFactory = calculationStrategyFactory;
 	}
 
-	public void addUser(UserDTO userData) {
-		userAuthenticationRepository.addUser(userData);		
-	}
-
-	public Schedule calculateSchedule(CalculationType calculationType, Schedule schedule) {
+	public Schedule calculateSchedule(CalculationType calculationType, Schedule schedule) throws IOException {
 		CalculationStrategy strategy = calculationStrategyFactory.getCalculationStrategy(calculationType);
 		List<String> userIDs = getUserIDsFromSchedule(schedule);		
 		List<Schedule> schedules = getSchedules(userIDs);		
@@ -53,7 +50,7 @@ public class ScheduleModel {
 		return new ArrayList<String>(userIDs);
 	}
 
-	private List<Schedule> getSchedules(List<String> userIDs) {
+	private List<Schedule> getSchedules(List<String> userIDs) throws IOException {
 		List<Schedule> schedules = new LinkedList<>();
 		for(String userID : userIDs){
 			Authentication userAuthentication = userAuthenticationRepository.getAuthentication(userID);

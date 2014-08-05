@@ -1,50 +1,36 @@
 package edu.oregonState.scheduler.user;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Authentication {
 	private String token;
+	private String id;
 
-	public Authentication(String token) {
+	public Authentication() {
+	}
+	
+	public Authentication(String token, String id) {
 		super();
 		this.token = token;
 	}
 
+    @JsonProperty
 	public String getToken() {
 		return token;
 	}
 
+    @JsonProperty
 	public void setToken(String token) {
 		this.token = token;
 	}
 
-	@Override
-	public String toString() {
-		return "Authentication [token=" + token + "]";
+    @JsonProperty
+	public String getId() {
+		return id;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((token == null) ? 0 : token.hashCode());
-		return result;
+    @JsonProperty
+	public void setId(String id) {
+		this.id = id;
 	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Authentication other = (Authentication) obj;
-		if (token == null) {
-			if (other.token != null)
-				return false;
-		} else if (!token.equals(other.token))
-			return false;
-		return true;
-	}
-	
-	
 }

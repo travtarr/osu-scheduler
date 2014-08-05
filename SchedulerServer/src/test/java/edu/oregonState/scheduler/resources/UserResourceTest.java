@@ -8,16 +8,21 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import edu.oregonState.scheduler.core.UserDTO;
+import edu.oregonState.scheduler.data.UserDAO;
+import edu.oregonState.scheduler.data.UserJDBIDAO;
 import edu.oregonState.scheduler.model.ScheduleModel;
+import edu.oregonState.scheduler.user.User;
 
 public class UserResourceTest {
 	private UserResource target;
-	private ScheduleModel mockModel;
+	private UserDAO mockUserDAO;
+	private UserJDBIDAO mockuserJDBIDAO;
 
 	@Before
 	public void setUpBefore() throws Exception {
-		mockModel = mock(ScheduleModel.class);
-		target = new UserResource(mockModel);
+		mockUserDAO = mock(UserDAO.class);
+		mockuserJDBIDAO = mock(UserJDBIDAO.class);
+		target = new UserResource(mockUserDAO, mockuserJDBIDAO);
 	}
 
 	@Test
@@ -29,7 +34,7 @@ public class UserResourceTest {
 		target.submitUserData(userData);
 		
 		//assert
-		verify(mockModel,times(1)).addUser(userData);
+		verify(mockUserDAO,times(1)).create(any(User.class));
 	}
 
 }
