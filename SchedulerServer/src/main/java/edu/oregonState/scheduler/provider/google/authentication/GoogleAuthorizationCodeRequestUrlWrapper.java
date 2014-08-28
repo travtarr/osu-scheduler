@@ -10,6 +10,8 @@ public class GoogleAuthorizationCodeRequestUrlWrapper {
 	public GoogleAuthorizationCodeRequestUrlWrapper(String clientId,
 			String redirectUrl, List<String> scope) {
 		this.googleAuthorizationCodeRequestUrl = new GoogleAuthorizationCodeRequestUrl(clientId,redirectUrl,scope);
+		googleAuthorizationCodeRequestUrl.setAccessType("offline");
+		googleAuthorizationCodeRequestUrl.setApprovalPrompt("force");
 	}
 	
 	public String getURL(){
