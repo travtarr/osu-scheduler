@@ -17,7 +17,11 @@ public class CalculationStrategyFactory {
 	}
 	
 	private CalculationStrategy getGivenTimeRangeGetUsersSchedule(){
-		return getStubCalculationStrategy();
+		return PassThruStrategy();
+	}
+
+	private CalculationStrategy PassThruStrategy() {
+		return new PassThruStrategy();
 	}
 
 	private CalculationStrategy getGivenTimeRangeAndUsersGetUsersAvailableEntireTime(){

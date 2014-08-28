@@ -56,6 +56,7 @@ public class ScheduleModel {
 			Authentication userAuthentication = userAuthenticationRepository.getAuthentication(userID);
 			schedules.add(scheduleProvider.getSchedule(userID, userAuthentication));
 		}
+		System.out.println("Model has: " + schedules.toString());
 		return schedules;
 	}
 

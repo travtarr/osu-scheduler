@@ -44,7 +44,7 @@ final public class MainFactory {
     }
 
 	public static GoogleTokenProvider getGoogleTokenProvider() throws ConfigException {
-		return new GoogleTokenProvider(new ConfigFactory());
+		return new GoogleTokenProvider(new ConfigFactory(),getGoogleCalendarAuthURLProvider());
 	}
 
     
