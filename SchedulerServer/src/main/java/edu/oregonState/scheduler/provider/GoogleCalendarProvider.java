@@ -49,6 +49,7 @@ public class GoogleCalendarProvider implements ScheduleProvider {
 		JsonFactory jsonFactory = new GsonFactory();
 		GoogleTokenResponse response = new GoogleAuthorizationCodeTokenRequest(httpTransport, jsonFactory,
 				clientID, clientSecret, authentication.getToken(), redirectUrl).execute();
+		response.getRefreshToken();
 		GoogleCredential credential = new GoogleCredential().setFromTokenResponse(response);
 		Calendar service = new Calendar(httpTransport,jsonFactory,credential);
 		

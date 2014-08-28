@@ -1,5 +1,7 @@
 package edu.oregonState.scheduler.resources;
 
+import java.io.IOException;
+
 import io.dropwizard.hibernate.UnitOfWork;
 
 import javax.ws.rs.Consumes;
@@ -11,6 +13,12 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import com.codahale.metrics.annotation.Timed;
+import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
+import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.gson.GsonFactory;
 import com.google.common.base.Optional;
 
 import edu.oregonState.scheduler.MainFactory;
@@ -21,6 +29,7 @@ import edu.oregonState.scheduler.data.UserDAO;
 import edu.oregonState.scheduler.data.UserJDBIDAO;
 import edu.oregonState.scheduler.model.ScheduleModel;
 import edu.oregonState.scheduler.user.Authentication;
+import edu.oregonState.scheduler.user.GoogleTokenProvider;
 import edu.oregonState.scheduler.user.User;
 import edu.oregonState.scheduler.user.UserAuthenticationRepository;
 
@@ -29,9 +38,11 @@ import edu.oregonState.scheduler.user.UserAuthenticationRepository;
 public class UserResource implements UserAuthenticationRepository{
 	private final UserDAO userDAO;
 	private final UserJDBIDAO userJDBIDAO;
-    public UserResource(UserDAO userDAO, UserJDBIDAO userJDBIDAO) {
+	private final GoogleTokenProvider googleTokenProvider;
+    public UserResource(UserDAO userDAO, UserJDBIDAO userJDBIDAO, GoogleTokenProvider googleTokenProvider) {
     	this.userDAO = userDAO;
     	this.userJDBIDAO = userJDBIDAO;
+    	this.googleTokenProvider = googleTokenProvider;
     }
 
 //public Schedule getProcessedScedule(@QueryParam("querySchedule") Optional<Schedule> querySchedule)
@@ -40,10 +51,13 @@ public class UserResource implements UserAuthenticationRepository{
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@UnitOfWork
-    public void submitUserData(UserDTO userData) {
+    public void submitUserData(UserDTO userData) throws IOException {
 		User user = new User(userData);
+		user.setGoogleToken(googleTokenProvider.getRefreshToken(user.getGoogleToken()));
 		userDAO.create(user);
     }
+	
+	
 	
 
 	@UnitOfWork
@@ -56,9 +70,9 @@ public class UserResource implements UserAuthenticationRepository{
 	}
 
 	@Override
-	public Authentication getAuthentication(String userID) {
+	public Authentication getAuthentication(String userID) throws IOException {
 		String googleID = userJDBIDAO.findGoogleID(userID);
-		String googleToken = userJDBIDAO.findGoogleToken(userID);
+		String googleToken = googleTokenProvider.getAuthenticationToken(userJDBIDAO.findGoogleToken(userID));
 		return new Authentication(googleToken, googleID);
 	}	
 }

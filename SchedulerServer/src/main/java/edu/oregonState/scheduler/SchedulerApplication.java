@@ -48,7 +48,7 @@ public class SchedulerApplication extends Application<SchedulerConfiguration> {
         final UserJDBIDAO userJDBIdao = jdbi.onDemand(UserJDBIDAO.class);
         
         
-        final UserResource userResource = new UserResource(new UserDAO(hibernate.getSessionFactory()),userJDBIdao);
+        final UserResource userResource = new UserResource(new UserDAO(hibernate.getSessionFactory()),userJDBIdao,MainFactory.getGoogleTokenProvider());
         final ScheduleResource scheduleResource = new ScheduleResource(userResource);        
         final TemplateHealthCheck healthCheck =
                 new TemplateHealthCheck(configuration.getTemplate());

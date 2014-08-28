@@ -10,6 +10,7 @@ import edu.oregonState.scheduler.model.calculation.CalculationStrategyFactory;
 import edu.oregonState.scheduler.provider.StubScheduleProvider;
 import edu.oregonState.scheduler.provider.google.authentication.GoogleCalendarAuthURLProvider;
 import edu.oregonState.scheduler.resources.UserResource;
+import edu.oregonState.scheduler.user.GoogleTokenProvider;
 import edu.oregonState.scheduler.user.User;
 import edu.oregonState.scheduler.user.UserAuthenticationRepository;
 
@@ -41,6 +42,10 @@ final public class MainFactory {
     		userDAO = new UserDAO(getHibernate().getSessionFactory());
     	return userDAO;
     }
+
+	public static GoogleTokenProvider getGoogleTokenProvider() throws ConfigException {
+		return new GoogleTokenProvider(new ConfigFactory());
+	}
 
     
     
