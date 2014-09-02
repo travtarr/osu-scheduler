@@ -8,13 +8,13 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import edu.oregonState.scheduler.core.CalendarEvent;
 import edu.oregonState.scheduler.core.Schedule;
-import edu.oregonState.scheduler.resources.SQLCatalogResource;
 import edu.oregonState.scheduler.user.Authentication;
 
-public class OSUCatalogScheduleProvider implements ScheduleProvider {
+public class CatalogScheduleProvider implements ScheduleProvider {
 
-	private SQLCatalogResource sql;
+	private CatalogScheduleSQLProvider sql;
 	private static final int INSTRUCTOR = 5;
 	private static final int TERM = 0;
 	private static final int DAYSTIMESDATES = 6;
@@ -22,13 +22,13 @@ public class OSUCatalogScheduleProvider implements ScheduleProvider {
 	private static final int COURSE_TABLE = 5;
 	private static final int TIMEOUT = 120 * 1000; // 2mins in milliseconds
 
-	public OSUCatalogScheduleProvider() {
+	public CatalogScheduleProvider() {
 
 	}
 	
 	@Override
 	public Schedule getSchedule(String userID, Authentication authentication) {
-		// TODO Auto-generated method stub
+		// TODO Need to match userID to a name
 		return null;
 	}
 
@@ -61,12 +61,31 @@ public class OSUCatalogScheduleProvider implements ScheduleProvider {
 	 * 
 	 * @param instructorName
 	 */
-	public void getSchedule(String instructorName) {
-		/**
-		 * TODO: Construct calendar event 
-		 */
-
+	private Schedule getSchedule(String instructorName, String userID) {
+		
+		// create sql resource
+		initDB();		
+		
+		String[][] rawEvent = sql.getSchedule(instructorName);
+		
+		
+		CalendarEvent event = new CalendarEvent();
+		event.setEndDay(1);
+		event.setEndHour(12);
+		event.setEndMinute(0);
+		event.setEndMonth(1);
+		event.setStartDay(1);
+		event.setStartHour(11);
+		event.setStartMinute(0);
+		event.setStartMonth(1);
+		event.setTimeZoneOffset(-5);
+		event.setUserIds(new String[]{userID});
+		
+		Schedule schedule = new Schedule(event);
+		
+		return schedule;
 	}
+	
 
 	/**
 	 * Initializes the DB object with connection credentials
@@ -78,7 +97,7 @@ public class OSUCatalogScheduleProvider implements ScheduleProvider {
 		final String username = "travis";
 		final String password = "5TB232ayq34q";
 
-		sql = new SQLCatalogResource(username, password, address, dbName);
+		sql = new CatalogScheduleSQLProvider(username, password, address, dbName);
 	}
 
 	private void storeCourseDetails(String subject, String courseNum) {

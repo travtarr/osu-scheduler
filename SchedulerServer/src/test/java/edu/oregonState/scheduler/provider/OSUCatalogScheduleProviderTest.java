@@ -7,11 +7,11 @@ import org.junit.Test;
 
 public class OSUCatalogScheduleProviderTest {
 
-	OSUCatalogScheduleProvider parser;
+	CatalogScheduleProvider parser;
 	
 	@Before
 	public void testOSUCatalogScheduleProvider() {
-		parser = new OSUCatalogScheduleProvider();
+		parser = new CatalogScheduleProvider();
 	}
 
 	@Test
