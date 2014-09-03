@@ -37,14 +37,20 @@ public class CalendarEvent {
 	
 	@Min(value=-23)
 	@Max(value=23)	
-	private Integer TimeZoneOffset;
+	private Integer timeZoneOffset;
+	
+	@Min(1990)
+	@Max(2020)
+	private Integer startYear;
+
+	@Min(1990)
+	@Max(2020)
+	private Integer endYear;
 	
 	private String[] userIds;
-
 	
-	
-	public CalendarEvent(Integer startMonth, Integer startDay,
-			Integer startHour, Integer startMinute, Integer endMonth,
+	public CalendarEvent(Integer startYear, Integer startMonth, Integer startDay,
+			Integer startHour, Integer startMinute, Integer endYear, Integer endMonth,
 			Integer endDay, Integer endHour, Integer endMinute,
 			Integer timeZoneOffset, String[] userIds) {
 		super();
@@ -56,8 +62,10 @@ public class CalendarEvent {
 		this.endDay = endDay;
 		this.endHour = endHour;
 		this.endMinute = endMinute;
-		TimeZoneOffset = timeZoneOffset;
+		timeZoneOffset = timeZoneOffset;
 		this.userIds = userIds;
+		this.startYear = startYear;
+		this.endYear = endYear;
 	}
 	
 	
@@ -67,13 +75,15 @@ public class CalendarEvent {
 
 
 
-	@Override
+
+    @Override
 	public String toString() {
 		return "CalendarEvent [startMonth=" + startMonth + ", startDay="
 				+ startDay + ", startHour=" + startHour + ", startMinute="
 				+ startMinute + ", endMonth=" + endMonth + ", endDay=" + endDay
 				+ ", endHour=" + endHour + ", endMinute=" + endMinute
-				+ ", TimeZoneOffset=" + TimeZoneOffset + ", userIds="
+				+ ", TimeZoneOffset=" + timeZoneOffset + ", startYear="
+				+ startYear + ", endYear=" + endYear + ", userIds="
 				+ Arrays.toString(userIds) + "]";
 	}
 
@@ -84,13 +94,14 @@ public class CalendarEvent {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((TimeZoneOffset == null) ? 0 : TimeZoneOffset.hashCode());
+				+ ((timeZoneOffset == null) ? 0 : timeZoneOffset.hashCode());
 		result = prime * result + ((endDay == null) ? 0 : endDay.hashCode());
 		result = prime * result + ((endHour == null) ? 0 : endHour.hashCode());
 		result = prime * result
 				+ ((endMinute == null) ? 0 : endMinute.hashCode());
 		result = prime * result
 				+ ((endMonth == null) ? 0 : endMonth.hashCode());
+		result = prime * result + ((endYear == null) ? 0 : endYear.hashCode());
 		result = prime * result
 				+ ((startDay == null) ? 0 : startDay.hashCode());
 		result = prime * result
@@ -99,6 +110,8 @@ public class CalendarEvent {
 				+ ((startMinute == null) ? 0 : startMinute.hashCode());
 		result = prime * result
 				+ ((startMonth == null) ? 0 : startMonth.hashCode());
+		result = prime * result
+				+ ((startYear == null) ? 0 : startYear.hashCode());
 		result = prime * result + Arrays.hashCode(userIds);
 		return result;
 	}
@@ -114,10 +127,10 @@ public class CalendarEvent {
 		if (getClass() != obj.getClass())
 			return false;
 		CalendarEvent other = (CalendarEvent) obj;
-		if (TimeZoneOffset == null) {
-			if (other.TimeZoneOffset != null)
+		if (timeZoneOffset == null) {
+			if (other.timeZoneOffset != null)
 				return false;
-		} else if (!TimeZoneOffset.equals(other.TimeZoneOffset))
+		} else if (!timeZoneOffset.equals(other.timeZoneOffset))
 			return false;
 		if (endDay == null) {
 			if (other.endDay != null)
@@ -139,6 +152,11 @@ public class CalendarEvent {
 				return false;
 		} else if (!endMonth.equals(other.endMonth))
 			return false;
+		if (endYear == null) {
+			if (other.endYear != null)
+				return false;
+		} else if (!endYear.equals(other.endYear))
+			return false;
 		if (startDay == null) {
 			if (other.startDay != null)
 				return false;
@@ -159,13 +177,19 @@ public class CalendarEvent {
 				return false;
 		} else if (!startMonth.equals(other.startMonth))
 			return false;
+		if (startYear == null) {
+			if (other.startYear != null)
+				return false;
+		} else if (!startYear.equals(other.startYear))
+			return false;
 		if (!Arrays.equals(userIds, other.userIds))
 			return false;
 		return true;
 	}
 
 
-    @JsonProperty
+
+	@JsonProperty
 	public Integer getStartMonth() {
 		return startMonth;
 	}
@@ -246,13 +270,28 @@ public class CalendarEvent {
 	}
 
     @JsonProperty
-	public Integer getTimeZoneOffset() {
-		return TimeZoneOffset;
+	public Integer getStartYear() {
+		return startYear;
 	}
 
     @JsonProperty
+	public Integer getEndYear() {
+		return endYear;
+	}
+    
+    @JsonProperty
+    public void setEndYear(Integer endYear){
+    	this.endYear = endYear;
+    }
+
+    @JsonProperty
+    public void setStartYear(Integer startYear){
+    	this.startYear = startYear;
+    }
+    
+    @JsonProperty
 	public void setTimeZoneOffset(Integer timeZoneOffset) {
-		TimeZoneOffset = timeZoneOffset;
+		this.timeZoneOffset = timeZoneOffset;
 	}
 
     @JsonProperty

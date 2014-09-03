@@ -1,5 +1,6 @@
 package edu.oregonState.scheduler.model;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -9,7 +10,7 @@ import java.util.Set;
 
 import edu.oregonState.scheduler.core.CalendarEvent;
 import edu.oregonState.scheduler.core.Schedule;
-import edu.oregonState.scheduler.core.UserData;
+import edu.oregonState.scheduler.core.UserDTO;
 import edu.oregonState.scheduler.model.calculation.CalculationStrategy;
 import edu.oregonState.scheduler.model.calculation.CalculationStrategyFactory;
 import edu.oregonState.scheduler.model.calculation.CalculationType;
@@ -33,11 +34,7 @@ public class ScheduleModel {
 		this.calculationStrategyFactory = calculationStrategyFactory;
 	}
 
-	public void addUser(UserData userData) {
-		userAuthenticationRepository.addUser(userData);		
-	}
-
-	public Schedule calculateSchedule(CalculationType calculationType, Schedule schedule) {
+	public Schedule calculateSchedule(CalculationType calculationType, Schedule schedule) throws IOException {
 		CalculationStrategy strategy = calculationStrategyFactory.getCalculationStrategy(calculationType);
 		List<String> userIDs = getUserIDsFromSchedule(schedule);		
 		List<Schedule> schedules = getSchedules(userIDs);		
@@ -53,12 +50,13 @@ public class ScheduleModel {
 		return new ArrayList<String>(userIDs);
 	}
 
-	private List<Schedule> getSchedules(List<String> userIDs) {
+	private List<Schedule> getSchedules(List<String> userIDs) throws IOException {
 		List<Schedule> schedules = new LinkedList<>();
 		for(String userID : userIDs){
 			Authentication userAuthentication = userAuthenticationRepository.getAuthentication(userID);
 			schedules.add(scheduleProvider.getSchedule(userID, userAuthentication));
 		}
+		System.out.println("Model has: " + schedules.toString());
 		return schedules;
 	}
 

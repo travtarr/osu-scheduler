@@ -20,11 +20,6 @@ public class OSUCatalogScheduleProviderTest {
 	}
 
 	@Test
-	public void testParseSchedule() {
-		assert(parser.parseSchedule());
-	}
-
-	@Test
 	public void testGetScheduleString() {
 		fail("Not yet implemented");
 	}

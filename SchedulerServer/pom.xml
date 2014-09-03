@@ -6,33 +6,63 @@
 	<version>0.0.1-SNAPSHOT</version>
 
 	<dependencies>
+	    <dependency>
+	        <groupId>io.dropwizard</groupId>
+	        <artifactId>dropwizard-core</artifactId>
+	        <version>0.7.0</version>
+	    </dependency>
+   		<dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-hibernate</artifactId>
+            <version>0.7.0</version>
+        </dependency>	   
+   		<dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-jdbi</artifactId>
+            <version>0.7.0</version>
+        </dependency>	         
+	    <dependency>
+	    	<groupId>org.mockito</groupId>
+	    	<artifactId>mockito-all</artifactId>
+	    	<version>1.9.5</version>
+	    	<scope>test</scope>
+	    </dependency>
 		<dependency>
-			<groupId>io.dropwizard</groupId>
-			<artifactId>dropwizard-core</artifactId>
-			<version>0.7.0</version>
+		  <groupId>com.google.api-client</groupId>
+		  <artifactId>google-api-client</artifactId>
+		  <version>1.18.0-rc</version>		  
+		</dependency>	    
+	  	<dependency>
+		  	<groupId>com.google.oauth-client</groupId>
+		  	<artifactId>google-oauth-client</artifactId>
+ 			<version>1.19.0</version>
 		</dependency>
+	  	<dependency>
+	  		<groupId>mysql</groupId>
+	  		<artifactId>mysql-connector-java</artifactId>
+	  		<version>5.1.31</version>
+	  	</dependency>
 		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
-			<version>1.9.5</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.google.api-client</groupId>
-			<artifactId>google-api-client</artifactId>
-			<version>1.18.0-rc</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.oauth-client</groupId>
-			<artifactId>google-oauth-client</artifactId>
-			<version>1.18.0-rc</version>
+			<groupId>com.google.apis</groupId>
+			<artifactId>google-api-services-calendar</artifactId>
+			<version>v3-rev88-1.19.0</version>
+		</dependency>	  	
+	  	<dependency>
+		  <groupId>com.google.api-client</groupId>
+		  <artifactId>google-api-client-gson</artifactId>
+		  <version>1.18.0-rc</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jsoup</groupId>
 			<artifactId>jsoup</artifactId>
 			<version>1.7.2</version>
 		</dependency>
-
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.4</version>
+		</dependency>
+		
 	</dependencies>
 
 	<build>

@@ -1,8 +1,11 @@
 package edu.oregonState.scheduler.user;
 
-import edu.oregonState.scheduler.core.UserData;
+import java.io.IOException;
 
-public class UserAuthenticationRepository {
-	public void addUser(UserData userData){}
-	public Authentication getAuthentication(String userID) { return new Authentication();}
+import edu.oregonState.scheduler.core.UserDTO;
+import edu.oregonState.scheduler.data.UserDAO;
+
+public interface UserAuthenticationRepository {
+
+	public Authentication getAuthentication(String userID) throws IOException;
 }
