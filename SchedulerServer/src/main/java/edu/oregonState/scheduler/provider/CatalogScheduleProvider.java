@@ -1,7 +1,5 @@
 package edu.oregonState.scheduler.provider;
 
-import io.dropwizard.hibernate.SessionFactoryFactory;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.io.IOException;
