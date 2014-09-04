@@ -199,7 +199,7 @@ public class CatalogScheduleProvider implements ScheduleProvider {
 		final String courseTable = "ctl00_ContentPlaceHolder1_SOCListUC1_gvOfferings";
 		String linkStr = null, courseName = "";
 		String[] linkStrSplit = null, whenSplit = null, dateSplit, timeSplit, valueList;
-		List toStoreValues = new List();
+		java.awt.List toStoreValues = new java.awt.List();
 		Element[] values = null;
 		String[][] listArray = null;
 		int listSize = 0;
@@ -303,10 +303,10 @@ public class CatalogScheduleProvider implements ScheduleProvider {
 	 *            hyperlink with course number
 	 * @return course number
 	 */
-	private List getCourseNumbers(String subject) {
+	private java.awt.List getCourseNumbers(String subject) {
 		final String courseNumURI = "http://catalog.oregonstate.edu/CourseList.aspx?subjectcode="
 				+ subject + "&level=undergrad&campus=corvallis";
-		List courseNums = new List();
+		java.awt.List courseNums = new java.awt.List();
 		String courseNum = null;
 
 		try {
@@ -323,7 +323,6 @@ public class CatalogScheduleProvider implements ScheduleProvider {
 					}
 				}
 			}
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -336,10 +335,10 @@ public class CatalogScheduleProvider implements ScheduleProvider {
 	 * 
 	 * @return List of subjects (ex. MTH, BIO, ZOO)
 	 */
-	private List getSubjectList() {
+	private java.awt.List getSubjectList() {
 		final String courseListURI = "http://catalog.oregonstate.edu/CourseDescription.aspx?level=all&campus=corvallis";
 		final String subjTable = "ctl00_ContentPlaceHolder1_dlSubjects";
-		List list = new List();
+		java.awt.List list = new java.awt.List();
 
 		try {
 			Document doc = Jsoup.connect(courseListURI).get();
