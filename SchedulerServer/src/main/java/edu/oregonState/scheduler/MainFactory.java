@@ -10,7 +10,11 @@ import edu.oregonState.scheduler.data.CatalogDAO;
 import edu.oregonState.scheduler.data.UserDAO;
 import edu.oregonState.scheduler.model.ScheduleModel;
 import edu.oregonState.scheduler.model.calculation.CalculationStrategyFactory;
+<<<<<<< HEAD
 import edu.oregonState.scheduler.provider.CatalogScheduleProvider;
+=======
+import edu.oregonState.scheduler.provider.CompositeScheduleProvider;
+>>>>>>> branch 'master' of https://github.com/travtarr/osu-scheduler.git
 import edu.oregonState.scheduler.provider.StubScheduleProvider;
 import edu.oregonState.scheduler.provider.google.authentication.GoogleCalendarAuthURLProvider;
 import edu.oregonState.scheduler.user.GoogleTokenProvider;
@@ -21,7 +25,7 @@ final public class MainFactory {
 	public static String catalog = "gatherCatalog";
 	
 	public static ScheduleModel getScheduleModel(UserAuthenticationRepository repo) throws ConfigException{
-		return new ScheduleModel(repo, new StubScheduleProvider(), new CalculationStrategyFactory());
+		return new ScheduleModel(repo, new CompositeScheduleProvider(), new CalculationStrategyFactory());
 	}
 	
 	public static GoogleCalendarAuthURLProvider getGoogleCalendarAuthURLProvider() throws ConfigException{

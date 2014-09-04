@@ -43,21 +43,9 @@ public class ScheduleResource {
 	@Timed
     public Schedule getProcessedScedule(Schedule schedule, @QueryParam("queryType") Optional<String> queryType) throws IOException {
 		CalculationType calcType = calcTypeMap.getCalculationType(queryType.get());
+		System.out.println("Schedule resource requested: " + schedule.toString());
 		return scheduleModel.calculateSchedule(calcType,schedule);//TODO: add input later
     }
 	
-	private CalendarEvent getEvent(){
-		CalendarEvent event = new CalendarEvent();
-		event.setEndDay(1);
-		event.setEndHour(12);
-		event.setEndMinute(0);
-		event.setEndMonth(1);
-		event.setStartDay(1);
-		event.setStartHour(11);
-		event.setStartMinute(0);
-		event.setStartMonth(1);
-		event.setTimeZoneOffset(-5);
-		event.setUserIds(new String[]{"davidsbr"});
-		return event;
-	}
+
 }

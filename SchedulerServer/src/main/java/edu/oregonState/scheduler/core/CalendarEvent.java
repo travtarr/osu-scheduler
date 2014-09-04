@@ -62,7 +62,7 @@ public class CalendarEvent {
 		this.endDay = endDay;
 		this.endHour = endHour;
 		this.endMinute = endMinute;
-		timeZoneOffset = timeZoneOffset;
+		this.timeZoneOffset = timeZoneOffset;
 		this.userIds = userIds;
 		this.startYear = startYear;
 		this.endYear = endYear;
@@ -294,6 +294,11 @@ public class CalendarEvent {
 		this.timeZoneOffset = timeZoneOffset;
 	}
 
+    @JsonProperty
+	public Integer getTimeZoneOffset() {
+		return timeZoneOffset;
+	}
+    
     @JsonProperty
 	public String[] getUserIds() {
 		return userIds;

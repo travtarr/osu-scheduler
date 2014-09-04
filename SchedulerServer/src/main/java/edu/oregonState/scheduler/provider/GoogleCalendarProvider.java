@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
@@ -81,8 +82,9 @@ public class GoogleCalendarProvider implements ScheduleProvider {
 			GregorianCalendar endTime = new GregorianCalendar();
 			System.out.println("Google event: " + event.toString());
 			startTime.setTimeInMillis(event.getStart().getDateTime().getValue());
+			
 			endTime.setTimeInMillis(event.getStart().getDateTime().getValue());
-			int timezone = event.getEnd().getDateTime().getTimeZoneShift();
+			int timezone = event.getEnd().getDateTime().getTimeZoneShift()/60;
 			CalendarEvent calendarEvent = new CalendarEvent(
 					startTime.get(GregorianCalendar.YEAR),
 					startTime.get(GregorianCalendar.MONTH)+1,
@@ -93,8 +95,8 @@ public class GoogleCalendarProvider implements ScheduleProvider {
 					endTime.get(GregorianCalendar.MONTH)+1,
 					endTime.get(GregorianCalendar.DAY_OF_MONTH),
 					endTime.get(GregorianCalendar.HOUR),
-					endTime.get(GregorianCalendar.MINUTE),
-					timezone,
+					endTime.get(GregorianCalendar.MINUTE),					
+					timezone, 
 					new String[]{userID});
 			calendarEvents.add(calendarEvent);
 			System.out.println("Calendar event:" + calendarEvent.toString());

@@ -42,7 +42,7 @@ public class ScheduleModelTest {
 		
 		when(mockUserAuthenticationRepository.getAuthentication(anyString())).thenReturn(mockAuthentication);
 		when(mockScheduleProvider.getSchedule(userID,mockAuthentication)).thenReturn(mockSchedule);
-		when(mockCalculationStrategyFactory.getCalculationStrategy(any(CalculationType.class))).thenReturn(mockStrategy);
+		when(mockCalculationStrategyFactory.getCalculationStrategy(any(CalculationType.class), any(Schedule.class))).thenReturn(mockStrategy);
 		target = new ScheduleModel(mockUserAuthenticationRepository,mockScheduleProvider,mockCalculationStrategyFactory);
 	}
 
@@ -55,7 +55,7 @@ public class ScheduleModelTest {
 		target.calculateSchedule(CalculationType.GivenTimeRangeAndUsersGetTimeSlotsAllAreAvailable, schedule);
 		
 		//assert
-		verify(mockCalculationStrategyFactory,times(1)).getCalculationStrategy(CalculationType.GivenTimeRangeAndUsersGetTimeSlotsAllAreAvailable);
+		verify(mockCalculationStrategyFactory,times(1)).getCalculationStrategy(CalculationType.GivenTimeRangeAndUsersGetTimeSlotsAllAreAvailable, schedule);
 	}
 	
 	@Test
