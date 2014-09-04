@@ -10,7 +10,7 @@ public class CalculationStrategyFactory {
 		case GivenTimeRangeAndUsersGetTimeSlotsAllAreAvailable:
 			return getGivenTimeRangeAndUsersGetTimeSlotsAllAreAvailable();
 		case GivenTimeRangeAndUsersGetUsersAvailableEntireTime:
-			return getGivenTimeRangeAndUsersGetUsersAvailableEntireTime();
+			return getGivenTimeRangeAndUsersGetUsersAvailableEntireTime(schedule.getEvents()[0]);
 		case GivenTimeRangeGetUsersSchedule:
 			return getGivenTimeRangeGetUsersSchedule(schedule.getEvents()[0]);
 	    default:
@@ -27,8 +27,8 @@ public class CalculationStrategyFactory {
 		return new PassThruStrategy();
 	}
 
-	private CalculationStrategy getGivenTimeRangeAndUsersGetUsersAvailableEntireTime(){
-		return getStubCalculationStrategy();
+	private CalculationStrategy getGivenTimeRangeAndUsersGetUsersAvailableEntireTime(CalendarEvent range){
+		return new UsersAvailableInTimeRange(range);
 	}
 
 	private CalculationStrategy getGivenTimeRangeAndUsersGetTimeSlotsAllAreAvailable(){
