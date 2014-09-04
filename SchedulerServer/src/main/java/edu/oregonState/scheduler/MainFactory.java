@@ -7,6 +7,7 @@ import edu.oregonState.scheduler.config.ConfigFactory;
 import edu.oregonState.scheduler.data.UserDAO;
 import edu.oregonState.scheduler.model.ScheduleModel;
 import edu.oregonState.scheduler.model.calculation.CalculationStrategyFactory;
+import edu.oregonState.scheduler.provider.CompositeScheduleProvider;
 import edu.oregonState.scheduler.provider.StubScheduleProvider;
 import edu.oregonState.scheduler.provider.google.authentication.GoogleCalendarAuthURLProvider;
 import edu.oregonState.scheduler.resources.UserResource;
@@ -16,7 +17,7 @@ import edu.oregonState.scheduler.user.UserAuthenticationRepository;
 
 final public class MainFactory {
 	public static ScheduleModel getScheduleModel(UserAuthenticationRepository repo) throws ConfigException{
-		return new ScheduleModel(repo, new StubScheduleProvider(), new CalculationStrategyFactory());
+		return new ScheduleModel(repo, new CompositeScheduleProvider(), new CalculationStrategyFactory());
 	}
 	
 	public static GoogleCalendarAuthURLProvider getGoogleCalendarAuthURLProvider() throws ConfigException{
