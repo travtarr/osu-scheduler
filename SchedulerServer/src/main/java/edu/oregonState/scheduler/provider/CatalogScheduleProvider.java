@@ -135,19 +135,25 @@ public class CatalogScheduleProvider implements ScheduleProvider {
 	 * @return
 	 */
 	private int getDayOfWeek(String day) {
+		int numDay = 1;
 		switch (day) {
 		case "M":
-			return DateTimeConstants.MONDAY;
+			numDay = DateTimeConstants.MONDAY;
+			break;
 		case "T":
-			return DateTimeConstants.TUESDAY;
+			numDay = DateTimeConstants.TUESDAY;
+			break;
 		case "W":
-			return DateTimeConstants.WEDNESDAY;
+			numDay = DateTimeConstants.WEDNESDAY;
+			break;
 		case "R":
-			return DateTimeConstants.THURSDAY;
+			numDay = DateTimeConstants.THURSDAY;
+			break;
 		case "F":
-			return DateTimeConstants.FRIDAY;
+			numDay = DateTimeConstants.FRIDAY;
+			break;
 		}
-		return 0;
+		return numDay;
 	}
 	
 
