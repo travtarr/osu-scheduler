@@ -267,8 +267,6 @@ public class CatalogScheduleSQLProvider {
 	 * Returns all the schedules of the given instructor.
 	 * 
 	 * @param instructor
-	 * @param dateStart
-	 * @param dateEnd
 	 * @return - an array of schedules, each array of strings is a separate event
 	 */
 	public String[][] getSchedule(String instructor) {

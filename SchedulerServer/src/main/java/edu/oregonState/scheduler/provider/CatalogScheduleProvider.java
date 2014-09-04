@@ -1,15 +1,26 @@
 package edu.oregonState.scheduler.provider;
 
-import java.awt.List;
+import io.dropwizard.hibernate.SessionFactoryFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.io.IOException;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import edu.oregonState.scheduler.MainFactory;
 import edu.oregonState.scheduler.core.CalendarEvent;
+import edu.oregonState.scheduler.core.Catalog;
 import edu.oregonState.scheduler.core.Schedule;
+import edu.oregonState.scheduler.data.CatalogDAO;
+import edu.oregonState.scheduler.data.UserDAO;
 import edu.oregonState.scheduler.user.Authentication;
 
 public class CatalogScheduleProvider implements ScheduleProvider {
@@ -25,12 +36,122 @@ public class CatalogScheduleProvider implements ScheduleProvider {
 	public CatalogScheduleProvider() {
 
 	}
-	
+
 	@Override
-	public Schedule getSchedule(String userID, Authentication authentication) {
-		// TODO Need to match userID to a name
-		return null;
+	public Schedule getSchedule(String userId, Authentication authentication) {
+		UserDAO user = MainFactory.getUserDAO();
+		String professorName = user.findByID(userId).getProfessorName();
+		if (professorName != null)
+			return getSchedule(professorName, userId);
+		else
+			return null;
 	}
+
+	/**
+	 * Retrieves the schedule of a given instructor.
+	 * 
+	 * @param instructorName
+	 * @param userID
+	 */
+	private Schedule getSchedule(String instructorName, String userID) {
+		CatalogDAO catalog = MainFactory.getCatalogDAO();
+		List<Catalog> catalogList = catalog.findByName(instructorName);
+		CalendarEvent event = null;
+		List<CalendarEvent> calendarEvents = new ArrayList<>();
+
+		/* Go through each event */
+		for (Catalog cat : catalogList) {
+			LocalDate dateStart = new LocalDate(cat.getDateStart());
+			LocalDate dateEnd = new LocalDate(cat.getDateEnd());
+			String[] days = cat.getClassDays().split(".");
+			String[] catTimeStart = cat.getClassTimeStart().split("[0-9]{2}");
+			String[] catTimeEnd = cat.getClassTimeEnd().split("[0-9]{2}");
+			
+			int catTimeStartHour = 0, catTimeStartMin = 0, catTimeEndHour = 0, catTimeEndMin = 0;
+			int timezone = 0;
+			
+			while (catTimeStart.length == 2 && catTimeEnd.length == 2) {
+				catTimeStartHour = Integer.parseInt(catTimeStart[0]);
+				catTimeStartMin = Integer.parseInt(catTimeStart[1]);
+				catTimeEndHour = Integer.parseInt(catTimeEnd[0]);
+				catTimeEndMin = Integer.parseInt(catTimeEnd[1]);
+			}
+			
+			LocalTime timezoneTime = new LocalTime(catTimeStartHour, catTimeStartMin);
+			
+			// Go through each day between the start date and end date of the class
+			while (dateStart.isBefore(dateEnd)) {
+				int dayOfWeek = dateStart.getDayOfWeek();
+				
+				// make sure this day is one of the class days of the week
+				if (isDayOfWeekMatch(days, dayOfWeek)) {
+					DateTime timezoneDate = dateStart.toDateTime(timezoneTime);
+					timezone = timezoneDate.getZone().getOffset(timezoneDate.getMillis()) / (1000 * 60 * 60);
+					event = new CalendarEvent(
+							dateStart.getYear(),
+							dateStart.getMonthOfYear(),
+							dateStart.getDayOfMonth(), 
+							catTimeStartHour,
+							catTimeStartMin,
+							dateStart.getYear(),
+							dateStart.getMonthOfYear(),
+							dateStart.getDayOfMonth(), 
+							catTimeEndHour,
+							catTimeEndMin,
+							timezone,
+							new String[]{userID}
+					);
+				}
+				calendarEvents.add(event);
+				
+				// go to next day
+				dateStart = dateStart.plusDays(1);
+			}
+		}
+		
+		CalendarEvent[] calendarEventsArr = new CalendarEvent[calendarEvents.size()];
+		calendarEvents.toArray(calendarEventsArr);
+		return new Schedule(calendarEventsArr);
+	}
+
+	
+	/**
+	 * Simple test to see if the given day is one of the days the class is scheduled
+	 * 
+	 * @param days
+	 * @param day
+	 * @return
+	 */
+	private boolean isDayOfWeekMatch(String[] days, int day) {
+		for (int i = 0; i < days.length; i++) {
+			if (day == getDayOfWeek(days[i]))
+				return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Converts a one digit day of the week to an integer.
+	 * 
+	 * @param day
+	 * @return
+	 */
+	private int getDayOfWeek(String day) {
+		switch (day) {
+		case "M":
+			return DateTimeConstants.MONDAY;
+		case "T":
+			return DateTimeConstants.TUESDAY;
+		case "W":
+			return DateTimeConstants.WEDNESDAY;
+		case "R":
+			return DateTimeConstants.THURSDAY;
+		case "F":
+			return DateTimeConstants.FRIDAY;
+		}
+		return 0;
+	}
+	
 
 	/**
 	 * Calls upon the HTMLParser and stores the information via SQLUtility.
@@ -46,46 +167,16 @@ public class CatalogScheduleProvider implements ScheduleProvider {
 		sql.createTable();
 
 		subjects = getSubjectList().getItems();
-		for(int i = 0; i < subjects.length; i++){
+		for (int i = 0; i < subjects.length; i++) {
 			courses = getCourseNumbers(subjects[i]).getItems();
-			
-			for(int j = 0; j < courses.length; j++){
-				System.out.println("subject: " + subjects[i] + ", course: " + courses[j]);
+
+			for (int j = 0; j < courses.length; j++) {
+				System.out.println("subject: " + subjects[i] + ", course: "
+						+ courses[j]);
 				storeCourseDetails(subjects[i], courses[j]);
 			}
 		}
 	}
-
-	/**
-	 * Retrieves the schedule of a given instructor between the given dates.
-	 * 
-	 * @param instructorName
-	 */
-	private Schedule getSchedule(String instructorName, String userID) {
-		
-		// create sql resource
-		initDB();		
-		
-		String[][] rawEvent = sql.getSchedule(instructorName);
-		
-		
-		CalendarEvent event = new CalendarEvent();
-		event.setEndDay(1);
-		event.setEndHour(12);
-		event.setEndMinute(0);
-		event.setEndMonth(1);
-		event.setStartDay(1);
-		event.setStartHour(11);
-		event.setStartMinute(0);
-		event.setStartMonth(1);
-		event.setTimeZoneOffset(-5);
-		event.setUserIds(new String[]{userID});
-		
-		Schedule schedule = new Schedule(event);
-		
-		return schedule;
-	}
-	
 
 	/**
 	 * Initializes the DB object with connection credentials
@@ -97,7 +188,8 @@ public class CatalogScheduleProvider implements ScheduleProvider {
 		final String username = "travis";
 		final String password = "5TB232ayq34q";
 
-		sql = new CatalogScheduleSQLProvider(username, password, address, dbName);
+		sql = new CatalogScheduleSQLProvider(username, password, address,
+				dbName);
 	}
 
 	private void storeCourseDetails(String subject, String courseNum) {
@@ -115,7 +207,7 @@ public class CatalogScheduleProvider implements ScheduleProvider {
 		// create courseID (eg. MTH-251)
 		String courseId = subject + " " + courseNum;
 		System.out.println("courseID: " + courseId);
-		
+
 		try {
 			Document doc = Jsoup.connect(courseURI).timeout(TIMEOUT).get();
 			Element content = doc.getElementById(form);
@@ -125,28 +217,26 @@ public class CatalogScheduleProvider implements ScheduleProvider {
 			// go through each H3 element and find course name
 			for (Element link : links) {
 				linkStr = link.text();
-
 				// split string up to remove non a-Z characters
 				linkStrSplit = linkStr.split("[^a-zA-Z]");
 
 				// compare the line to confirm it matches the subject
 				if (linkStrSplit[0].compareTo(subject) == 0) {
 					for (int i = 6; i < linkStrSplit.length; i++) {
-
-						if(i == 6)
+						if (i == 6)
 							courseName = courseName.concat(linkStrSplit[i]);
 						else
-							courseName = courseName.concat(" " + linkStrSplit[i]);
+							courseName = courseName.concat(" "
+									+ linkStrSplit[i]);
 					}
 				}
-				
 				if (courseName != "")
 					break;
 			}
 
 			// goto the course information table
 			content = doc.getElementById(courseTable);
-			if(content != null){
+			if (content != null) {
 				content = content.child(0).child(1);
 			}
 
@@ -154,35 +244,27 @@ public class CatalogScheduleProvider implements ScheduleProvider {
 				// get column data of row
 				links = content.children();
 				values = links.toArray(new Element[links.size()]);
-				
 				// store course's ID
 				toStoreValues.add(courseId);
-				
 				// store course's name now
 				toStoreValues.add(courseName);
-				
 				// get instructor
 				toStoreValues.add(values[INSTRUCTOR].text());
-
 				// get term
 				toStoreValues.add(values[TERM].text());
-
 				// split next string up, holds many values
-				whenSplit = values[DAYSTIMESDATES].text().split("\\s+");		
-							
-				
-				if(whenSplit.length < 3){
-					for(int i = 0; i < 4; i++)
-						toStoreValues.remove(toStoreValues.getItemCount()-1);
+				whenSplit = values[DAYSTIMESDATES].text().split("\\s+");
+
+				if (whenSplit.length < 3) {
+					for (int i = 0; i < 4; i++)
+						toStoreValues.remove(toStoreValues.getItemCount() - 1);
 				} else {
 					// get dateStart & dateEnd
 					dateSplit = whenSplit[2].split("-");
 					toStoreValues.add(convertDate(dateSplit[0]));
 					toStoreValues.add(convertDate(dateSplit[1]));
-					
 					// get class days
 					toStoreValues.add(whenSplit[0]);
-
 					// get timeStart & timeEnd
 					timeSplit = whenSplit[1].split("-");
 					toStoreValues.add(timeSplit[0]);
@@ -192,7 +274,6 @@ public class CatalogScheduleProvider implements ScheduleProvider {
 				// goto next row in table
 				content = content.nextElementSibling();
 			}
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -201,22 +282,25 @@ public class CatalogScheduleProvider implements ScheduleProvider {
 		valueList = toStoreValues.getItems();
 		listSize = valueList.length / NUM_FIELDS;
 		listArray = new String[listSize][NUM_FIELDS];
-		
-		for(int i = 0, k = 0; i < listSize; i++){
-			for(int j = 0; k < (NUM_FIELDS * listSize) && j < NUM_FIELDS; j++, k++){
+
+		for (int i = 0, k = 0; i < listSize; i++) {
+			for (int j = 0; k < (NUM_FIELDS * listSize) && j < NUM_FIELDS; j++, k++) {
 				listArray[i][j] = valueList[k];
-				//System.out.println("listArray["+ i + "][" + j +"] " + "valuesList["+ k +"] " + valueList[k]);
+				// System.out.println("listArray["+ i + "][" + j +"] " +
+				// "valuesList["+ k +"] " + valueList[k]);
 			}
 		}
-		
+
 		// store all information collected
 		sql.addClassSchedule(listArray);
-			
+
 	}
 
 	/**
 	 * Gets the course number from a given hyperlink.
-	 * @param link hyperlink with course number
+	 * 
+	 * @param link
+	 *            hyperlink with course number
 	 * @return course number
 	 */
 	private List getCourseNumbers(String subject) {
@@ -233,9 +317,9 @@ public class CatalogScheduleProvider implements ScheduleProvider {
 			for (Element link : links) {
 				if (link.hasAttr("href")) {
 					courseNum = getCourseNum(link.attr("href"));
-					if (courseNum != null){
+					if (courseNum != null) {
 						courseNums.add(courseNum);
-						//System.out.println("courseNum: " + courseNum);
+						// System.out.println("courseNum: " + courseNum);
 					}
 				}
 			}
@@ -275,6 +359,7 @@ public class CatalogScheduleProvider implements ScheduleProvider {
 
 	/**
 	 * Gets a course number from a string of text.
+	 * 
 	 * @param link
 	 * @return
 	 */
@@ -297,27 +382,28 @@ public class CatalogScheduleProvider implements ScheduleProvider {
 		String[] split = link.split("(=|&)");
 		return split[1];
 	}
-	
+
 	/**
 	 * Converts 9/24/13 date format into 2013-09-13 format.
+	 * 
 	 * @param rawDate
 	 * @return
 	 */
-	private String convertDate(String rawDate){
+	private String convertDate(String rawDate) {
 		String[] splitStr = rawDate.split("/");
 		String newStr = "20" + splitStr[2];
-		
-		if(splitStr[0].length() < 2)
+
+		if (splitStr[0].length() < 2)
 			newStr = newStr.concat("-0" + splitStr[0]);
 		else
 			newStr = newStr.concat("-" + splitStr[0]);
-		
-		if(splitStr[1].length() < 2)
+
+		if (splitStr[1].length() < 2)
 			newStr = newStr.concat("-0" + splitStr[1]);
 		else
 			newStr = newStr.concat("-" + splitStr[1]);
-		
-		//System.out.println("date: " + newStr);
+
+		// System.out.println("date: " + newStr);
 		return newStr;
 	}
 }

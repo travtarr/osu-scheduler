@@ -6,6 +6,7 @@ import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
 import edu.oregonState.scheduler.config.ConfigException;
 import edu.oregonState.scheduler.config.ConfigFactory;
+import edu.oregonState.scheduler.data.CatalogDAO;
 import edu.oregonState.scheduler.data.UserDAO;
 import edu.oregonState.scheduler.model.ScheduleModel;
 import edu.oregonState.scheduler.model.calculation.CalculationStrategyFactory;
@@ -27,7 +28,7 @@ final public class MainFactory {
 		return new GoogleCalendarAuthURLProvider(new ConfigFactory().getProperties());
 	}
 		
-	public static HibernateBundle<SchedulerConfiguration>  getHibernate(){
+	public static HibernateBundle<SchedulerConfiguration> getHibernate(){
 		if (hibernate == null)
 		hibernate = new HibernateBundle<SchedulerConfiguration>(User.class) {
 	        @Override
@@ -46,6 +47,13 @@ final public class MainFactory {
     		userDAO = new UserDAO(getHibernate().getSessionFactory());
     	return userDAO;
     }
+    
+    private static CatalogDAO catalogDAO;
+    public static CatalogDAO getCatalogDAO(){
+    	if(catalogDAO == null)
+    		catalogDAO = new CatalogDAO(getHibernate().getSessionFactory());
+    	return catalogDAO;
+    }
 
 	public static GoogleTokenProvider getGoogleTokenProvider() throws ConfigException {
 		return new GoogleTokenProvider(new ConfigFactory(),getGoogleCalendarAuthURLProvider());
@@ -58,5 +66,4 @@ final public class MainFactory {
 			csp.parseSchedule();
 		}		
 	}
-    
 }
