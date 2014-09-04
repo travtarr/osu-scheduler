@@ -35,7 +35,7 @@ public class ScheduleModel {
 	}
 
 	public Schedule calculateSchedule(CalculationType calculationType, Schedule schedule) throws IOException {
-		CalculationStrategy strategy = calculationStrategyFactory.getCalculationStrategy(calculationType);
+		CalculationStrategy strategy = calculationStrategyFactory.getCalculationStrategy(calculationType,schedule);
 		List<String> userIDs = getUserIDsFromSchedule(schedule);		
 		List<Schedule> schedules = getSchedules(userIDs);		
 		return strategy.calculate(schedules);
