@@ -66,13 +66,14 @@ public class UserResource implements UserAuthenticationRepository{
 	@Produces(MediaType.APPLICATION_JSON)
 	public Authentication getAuthentication(@QueryParam("userID") Optional<String> userID) {
 		User user = userDAO.findByID(userID.get());
-		return new Authentication(user.getGoogleToken(),user.getGoogleID());
+		return new Authentication(user.getGoogleToken(),user.getGoogleID(),user.getProfessorName());
 	}
 
 	@Override
 	public Authentication getAuthentication(String userID) throws IOException {
 		String googleID = userJDBIDAO.findGoogleID(userID);
 		String googleToken = googleTokenProvider.getAuthenticationToken(userJDBIDAO.findGoogleToken(userID));
-		return new Authentication(googleToken, googleID);
+		String professorName = userJDBIDAO.findProfessorName(userID);
+		return new Authentication(googleToken, googleID,professorName);
 	}	
 }

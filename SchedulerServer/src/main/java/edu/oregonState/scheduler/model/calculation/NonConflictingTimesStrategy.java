@@ -43,7 +43,7 @@ public class NonConflictingTimesStrategy implements CalculationStrategy {
 				Interval busyInterval = new Interval(builder.getDateTimeFromStartOfEvent(event),builder.getDateTimeFromEndOfEvent(event));
 				Queue<Interval> checkTheseIntervals= new ArrayDeque<>();
 				checkTheseIntervals.addAll(freeIntervals);
-				freeIntervals = new HashSet<>();
+				freeIntervals.removeAll(checkTheseIntervals);
 				while(!checkTheseIntervals.isEmpty()){
 					Interval freeInterval = checkTheseIntervals.poll();
 					if (!intersect(freeInterval,busyInterval)){

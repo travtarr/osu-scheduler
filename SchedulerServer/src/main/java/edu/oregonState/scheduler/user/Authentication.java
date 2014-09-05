@@ -5,13 +5,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Authentication {
 	private String token;
 	private String id;
+	private String professorName;
 
 	public Authentication() {
 	}
 	
-	public Authentication(String token, String id) {
+	public Authentication(String token, String id, String professorName) {
 		super();
 		this.token = token;
+		this.professorName = professorName;
 	}
 
     @JsonProperty
@@ -33,4 +35,15 @@ public class Authentication {
 	public void setId(String id) {
 		this.id = id;
 	}
+    
+    @JsonProperty
+    public String getProfessorName(){
+    	return professorName;
+    }
+    
+    @JsonProperty
+	public void setProfessorName(String professorName) {
+		this.professorName = professorName;
+	}
+        
 }

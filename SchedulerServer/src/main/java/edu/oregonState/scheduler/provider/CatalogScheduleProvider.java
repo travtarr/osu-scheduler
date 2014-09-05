@@ -20,6 +20,7 @@ import edu.oregonState.scheduler.core.Schedule;
 import edu.oregonState.scheduler.data.CatalogDAO;
 import edu.oregonState.scheduler.data.UserDAO;
 import edu.oregonState.scheduler.user.Authentication;
+import edu.oregonState.scheduler.user.UserAuthenticationRepository;
 
 public class CatalogScheduleProvider implements ScheduleProvider {
 
@@ -30,17 +31,14 @@ public class CatalogScheduleProvider implements ScheduleProvider {
 	private static final int NUM_FIELDS = 9;
 	private static final int COURSE_TABLE = 5;
 	private static final int TIMEOUT = 120 * 1000; // 2mins in milliseconds
-
+	
 	public CatalogScheduleProvider() {
-
 	}
 
 	@Override
 	public Schedule getSchedule(String userId, Authentication authentication) {
-		UserDAO user = MainFactory.getUserDAO();
-		String professorName = user.findByID(userId).getProfessorName();
-		if (professorName != null)
-			return getSchedule(professorName, userId);
+		if (authentication.getProfessorName() != null)
+			return getSchedule(authentication.getProfessorName(), userId);
 		else
 			return null;
 	}

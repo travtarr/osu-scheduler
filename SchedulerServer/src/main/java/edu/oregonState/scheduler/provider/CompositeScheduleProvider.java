@@ -9,6 +9,7 @@ import edu.oregonState.scheduler.config.ConfigFactory;
 import edu.oregonState.scheduler.core.CalendarEvent;
 import edu.oregonState.scheduler.core.Schedule;
 import edu.oregonState.scheduler.user.Authentication;
+import edu.oregonState.scheduler.user.UserAuthenticationRepository;
 
 public class CompositeScheduleProvider implements ScheduleProvider {
 	private final GoogleCalendarProvider googleCalendarProvider;
