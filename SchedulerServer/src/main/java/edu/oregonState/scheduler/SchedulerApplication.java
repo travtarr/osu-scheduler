@@ -54,6 +54,9 @@ public class SchedulerApplication extends Application<SchedulerConfiguration> {
                 new TemplateHealthCheck(configuration.getTemplate());
         final GoogleAuthResource googleAuthResource = new GoogleAuthResource(MainFactory.getGoogleCalendarAuthURLProvider());        
         
+        //run catalog parser if property set
+        MainFactory.storeCatalogSchedule();
+        
         //health
         environment.healthChecks().register("template", healthCheck);
         //resources

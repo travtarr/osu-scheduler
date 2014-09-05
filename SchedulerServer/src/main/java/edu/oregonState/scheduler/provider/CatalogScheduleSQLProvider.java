@@ -1,8 +1,8 @@
-package edu.oregonState.scheduler.resources;
+package edu.oregonState.scheduler.provider;
 
 import java.sql.*;
 
-public class SQLCatalogResource {
+public class CatalogScheduleSQLProvider {
 
 	private String username = null;
 	private String password = null;
@@ -15,7 +15,7 @@ public class SQLCatalogResource {
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 	private static final int NUM_FIELDS = 10;
 
-	public SQLCatalogResource(String username, String password, String address,
+	public CatalogScheduleSQLProvider(String username, String password, String address,
 			String dbName) {
 		this.username = username;
 		this.password = password;
@@ -194,16 +194,12 @@ public class SQLCatalogResource {
 	 * @param instructor
 	 * @param dateStart
 	 * @param dateEnd
-	 * @return - an array of schedules, each event is a separate string in the
-	 *         array
+	 * @return - an array of schedules, each array of strings is a separate event
 	 */
 	public String[][] getSchedule(String instructor, String dateStart,
 			String dateEnd) {
 		String[][] values = null;
-		/**
-		 * TODO: Create select query to retrieve the data requested. Returned
-		 * value may need to be an object or array.
-		 */
+
 		// verify input data
 		if (instructor.isEmpty() || dateStart.isEmpty() || dateEnd.isEmpty()) {
 			return null;
@@ -226,6 +222,76 @@ public class SQLCatalogResource {
 			stmt.setString(1, instructor);
 			stmt.setDate(2, Date.valueOf(dateStart));
 			stmt.setDate(3, Date.valueOf(dateEnd));
+
+			// execute statement
+			ResultSet rs = stmt.executeQuery();
+
+			// set-up array
+			values = new String[getNumRows(rs)][NUM_FIELDS];
+
+			// return null if no results found
+			if (getNumRows(rs) == 0)
+				return null;
+
+			// get results into a string array
+			int i = 0;
+			while (rs.next()) {
+				for (int j = 0; j < NUM_FIELDS; j++) {
+					values[i][j] = rs.getString(j + 1);
+					// System.out.println("result: " + values[i][j]);
+				}
+				i++;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			// close statement resource
+			if (stmt != null)
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+					printError("addClassSchedule",
+							"Unable to close preparedStatement");
+				}
+
+			// close connection
+			close();
+		}
+		return values;
+	}
+	
+	
+	/**
+	 * Returns all the schedules of the given instructor.
+	 * 
+	 * @param instructor
+	 * @return - an array of schedules, each array of strings is a separate event
+	 */
+	public String[][] getSchedule(String instructor) {
+		String[][] values = null;
+
+		// verify input data
+		if (instructor.isEmpty()) {
+			return null;
+		}
+		// open connection
+		connect();
+
+		// setup query
+		String qryStr = "SELECT * FROM " + DBTABLE + " WHERE "
+				+ "instructor = ?";
+
+		if (conn == null)
+			return null;
+
+		try {
+			// create prepared statement
+			stmt = conn.prepareStatement(qryStr);
+
+			// insert variables into statement
+			stmt.setString(1, instructor);
 
 			// execute statement
 			ResultSet rs = stmt.executeQuery();

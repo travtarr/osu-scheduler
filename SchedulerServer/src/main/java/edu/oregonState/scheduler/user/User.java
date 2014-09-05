@@ -27,6 +27,10 @@ public class User {
 	private String googleID;
 	@Column(name="googleToken",nullable=false)
 	private String googleToken;
+	@Column(name="professorName",nullable=true)
+	private String professorName;
+	@Column(name="deptName",nullable=true)
+	private String deptName;
 	
 	public User(){
 		
@@ -55,4 +59,13 @@ public class User {
 	public void setGoogleToken(String googleToken) {
 		this.googleToken = googleToken;
 	}	
+	public void setProfessorName(String professorName){
+		this.professorName = professorName;
+	}
+	public String getProfessorName(){
+		return professorName;
+	}
+	public void setDeptName(String deptName){
+		this.deptName = deptName;
+	}
 }
