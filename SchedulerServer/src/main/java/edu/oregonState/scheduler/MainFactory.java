@@ -2,10 +2,13 @@ package edu.oregonState.scheduler;
 
 import java.util.Properties;
 
+import org.hibernate.SessionFactory;
+
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
 import edu.oregonState.scheduler.config.ConfigException;
 import edu.oregonState.scheduler.config.ConfigFactory;
+import edu.oregonState.scheduler.core.Catalog;
 import edu.oregonState.scheduler.data.CatalogDAO;
 import edu.oregonState.scheduler.data.UserDAO;
 import edu.oregonState.scheduler.model.ScheduleModel;
@@ -19,7 +22,6 @@ import edu.oregonState.scheduler.user.UserAuthenticationRepository;
 
 final public class MainFactory {
 	public static String catalog = "gatherCatalog";
-	
 	public static ScheduleModel getScheduleModel(UserAuthenticationRepository repo) throws ConfigException{
 		return new ScheduleModel(repo, new CompositeScheduleProvider(), new CalculationStrategyFactory());
 	}
@@ -28,7 +30,7 @@ final public class MainFactory {
 		return new GoogleCalendarAuthURLProvider(new ConfigFactory().getProperties());
 	}
 		
-	public static HibernateBundle<SchedulerConfiguration> getHibernate(){
+	public static HibernateBundle<SchedulerConfiguration> getUserHibernate(){
 		if (hibernate == null)
 		hibernate = new HibernateBundle<SchedulerConfiguration>(User.class) {
 	        @Override
@@ -39,19 +41,30 @@ final public class MainFactory {
 		return hibernate;
 	}
 	
+	public static HibernateBundle<SchedulerConfiguration> getCatalogHibernate(){
+		if (hibernate == null)
+		hibernate = new HibernateBundle<SchedulerConfiguration>(Catalog.class) {
+	        @Override
+	        public DataSourceFactory getDataSourceFactory(SchedulerConfiguration configuration) {
+	            return configuration.getDataSourceFactory();
+	        }
+	    };
+		return hibernate;
+	}
+		
     private static HibernateBundle<SchedulerConfiguration> hibernate;
     
     private static UserDAO userDAO;
     public static UserDAO getUserDAO(){
     	if(userDAO == null)
-    		userDAO = new UserDAO(getHibernate().getSessionFactory());
+    		userDAO = new UserDAO(getUserHibernate().getSessionFactory());
     	return userDAO;
     }
     
     private static CatalogDAO catalogDAO;
     public static CatalogDAO getCatalogDAO(){
     	if(catalogDAO == null)
-    		catalogDAO = new CatalogDAO(getHibernate().getSessionFactory());
+    		catalogDAO = new CatalogDAO(getCatalogHibernate().getSessionFactory());
     	return catalogDAO;
     }
 
@@ -66,4 +79,5 @@ final public class MainFactory {
 			csp.parseSchedule();
 		}		
 	}
+
 }
