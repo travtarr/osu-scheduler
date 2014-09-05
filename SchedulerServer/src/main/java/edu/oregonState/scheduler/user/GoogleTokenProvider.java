@@ -50,7 +50,6 @@ public class GoogleTokenProvider {
 			HttpTransport httpTransport = new NetHttpTransport();
 			JsonFactory jsonFactory = new GsonFactory();
 			RefreshTokenRequest request = new RefreshTokenRequest(httpTransport, jsonFactory, new GenericUrl("https://accounts.google.com/o/oauth2/token"), googleToken);
-			System.out.println(request.toString());
 			request.set("client_id", clientID);
 			request.set("client_secret", clientSecret);
 			//request.set("approval_prompt", "force")
@@ -58,7 +57,6 @@ public class GoogleTokenProvider {
 			//request.setGrantType("refresh_token");
 			request.setScopes(Arrays.asList("https://www.googleapis.com/auth/calendar"));
 			TokenResponse response = request.execute();
-			System.out.println(response.toPrettyString());
 			return response.getAccessToken();			
 		}		
 		

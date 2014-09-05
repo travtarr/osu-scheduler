@@ -59,7 +59,6 @@ public class GoogleCalendarProvider implements ScheduleProvider {
 		ArrayList<String> calendarIDs = new ArrayList<>();
 		for(CalendarListEntry entry: calendarEntries){
 			calendarIDs.add(entry.getId());
-			System.out.println("Calendar Id:" + entry.getId());
 		}
 		//from  https://developers.google.com/google-apps/calendar/v3/reference/events/list
 		
@@ -69,7 +68,6 @@ public class GoogleCalendarProvider implements ScheduleProvider {
 			com.google.api.services.calendar.model.Events events;
 			do {
 				events = service.events().list(calendarID).setPageToken(pageToken).execute();
-				//System.out.println(events.toPrettyString());
 				allEvents.addAll(events.getItems());
 				pageToken = events.getNextPageToken();
 				
@@ -80,7 +78,6 @@ public class GoogleCalendarProvider implements ScheduleProvider {
 		for(Event event: allEvents){
 			GregorianCalendar startTime = new GregorianCalendar();
 			GregorianCalendar endTime = new GregorianCalendar();
-			System.out.println("Google event: " + event.toString());
 			startTime.setTimeInMillis(event.getStart().getDateTime().getValue());
 			
 			endTime.setTimeInMillis(event.getStart().getDateTime().getValue());
@@ -99,7 +96,6 @@ public class GoogleCalendarProvider implements ScheduleProvider {
 					timezone, 
 					new String[]{userID});
 			calendarEvents.add(calendarEvent);
-			System.out.println("Calendar event:" + calendarEvent.toString());
 		}
 		CalendarEvent[] calendarEventsArr = new CalendarEvent[calendarEvents.size()];
 		calendarEvents.toArray(calendarEventsArr);
