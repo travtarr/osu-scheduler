@@ -13,14 +13,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import edu.oregonState.scheduler.MainFactory;
 import edu.oregonState.scheduler.core.CalendarEvent;
-import edu.oregonState.scheduler.core.Catalog;
 import edu.oregonState.scheduler.core.Schedule;
-import edu.oregonState.scheduler.data.CatalogDAO;
-import edu.oregonState.scheduler.data.UserDAO;
 import edu.oregonState.scheduler.user.Authentication;
-import edu.oregonState.scheduler.user.UserAuthenticationRepository;
 
 public class CatalogScheduleProvider implements ScheduleProvider {
 
@@ -31,6 +26,12 @@ public class CatalogScheduleProvider implements ScheduleProvider {
 	private static final int NUM_FIELDS = 9;
 	private static final int COURSE_TABLE = 5;
 	private static final int TIMEOUT = 120 * 1000; // 2mins in milliseconds
+	
+	private static final int R_DATESTART = 5;
+	private static final int R_DATEEND = 6;
+	private static final int R_CLASSDAYS = 7;
+	private static final int R_CLASSTIMESTART = 8;
+	private static final int R_CLASSTIMEEND = 9;
 	
 	public CatalogScheduleProvider() {
 	}
@@ -50,18 +51,21 @@ public class CatalogScheduleProvider implements ScheduleProvider {
 	 * @param userID
 	 */
 	private Schedule getSchedule(String instructorName, String userID) {
-		CatalogDAO catalog = MainFactory.getCatalogDAO();
-		List<Catalog> catalogList = catalog.findByName(instructorName);
+
+		initDB();
+		
+		String[][] results = sql.getSchedule(instructorName);
+		
 		CalendarEvent event = null;
 		List<CalendarEvent> calendarEvents = new ArrayList<>();
 
 		/* Go through each event */
-		for (Catalog cat : catalogList) {
-			LocalDate dateStart = new LocalDate(cat.getDateStart());
-			LocalDate dateEnd = new LocalDate(cat.getDateEnd());
-			String[] days = cat.getClassDays().split(".");
-			String[] catTimeStart = cat.getClassTimeStart().split("[0-9]{2}");
-			String[] catTimeEnd = cat.getClassTimeEnd().split("[0-9]{2}");
+		for (String[] single : results) {
+			LocalDate dateStart = new LocalDate(single[R_DATESTART]);
+			LocalDate dateEnd = new LocalDate(single[R_DATEEND]);
+			String[] days = single[R_CLASSDAYS].split(".");
+			String[] catTimeStart = single[R_CLASSTIMESTART].split("[0-9]{2}");
+			String[] catTimeEnd = single[R_CLASSTIMEEND].split("[0-9]{2}");
 			
 			int catTimeStartHour = 0, catTimeStartMin = 0, catTimeEndHour = 0, catTimeEndMin = 0;
 			int timezone = 0;
