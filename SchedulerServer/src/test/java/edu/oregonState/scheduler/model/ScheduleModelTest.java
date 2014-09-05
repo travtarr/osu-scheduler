@@ -97,31 +97,6 @@ public class ScheduleModelTest {
 	}	
 	
 	
-	@Test
-	public void loopTest(){
-		Set<String> testSet = new HashSet<>();
-		testSet.add("f");
-		boolean flag = true;
-		for(int i = (int) 'a' ; i < (int) 'z' ; i ++){
-			char c = (char)i;
-			String s = Character.toString(c);
-			testSet.add(s);
-		}
-		for(String string: testSet){
-			if(flag){
-				flag = false;
-				for(int i = (int) 'a' ; i < (int) 'z' ; i ++){
-					char c = (char)i;
-					String s = Character.toString(c);
-					testSet.add(s);
-				}
-			}
-			System.out.println(string);
-		}
-		
-		
-	}
-	
 	private Schedule getSchedule() {
         CalendarEvent events[] = {getEvent()};
         Schedule schedule = new Schedule(events);

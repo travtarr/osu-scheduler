@@ -26,7 +26,6 @@ public class NonConflictingTimesStrategy implements CalculationStrategy {
 	
 	
 	public NonConflictingTimesStrategy(CalendarEvent timeRange){
-		System.out.println("NonConflicting time range requested inside this range: " + timeRange.toString());
 		this.timeRange = timeRange;
 		userIDs.addAll(Arrays.asList(timeRange.getUserIds()));
 		startInterval = new Interval(builder.getDateTimeFromStartOfEvent(timeRange),builder.getDateTimeFromEndOfEvent(timeRange));
@@ -39,7 +38,6 @@ public class NonConflictingTimesStrategy implements CalculationStrategy {
 		
 		for(Schedule schedule : schedules){			
 			for(CalendarEvent event : schedule.getEvents()){
-				System.out.println("Checking conflicts against: " + event.toString());
 				Interval busyInterval = new Interval(builder.getDateTimeFromStartOfEvent(event),builder.getDateTimeFromEndOfEvent(event));
 				Queue<Interval> checkTheseIntervals= new ArrayDeque<>();
 				checkTheseIntervals.addAll(freeIntervals);
@@ -48,23 +46,20 @@ public class NonConflictingTimesStrategy implements CalculationStrategy {
 					Interval freeInterval = checkTheseIntervals.poll();
 					if (!intersect(freeInterval,busyInterval)){
 						freeIntervals.add(freeInterval); //this is still valid
-						System.out.println("This is still valid: " + freeInterval.toString());
 						continue;
 					}
 					if(contains(busyInterval,freeInterval)){
-						System.out.println("This is not valid: " + freeInterval.toString());
 						//discard
 						continue;
 					}
 					addIntervalOnLeftIfNeeded(freeIntervals, busyInterval,freeInterval);
-					addIntervalOnRightIfNeeded(freeIntervals, busyInterval,freeInterval);					
+					addIntervalOnRightIfNeeded(freeIntervals, busyInterval,freeInterval);
 				}							
 			}
 		}
 		CalendarEvent[] eventsArray = getEventsArray(freeIntervals);
 		
 		Schedule schedule = new Schedule(eventsArray);
-		System.out.println("NonConflictingTimesStrategy returning: " + schedule.toString());
 		return new Schedule(eventsArray);	
 	}
 
@@ -84,8 +79,6 @@ public class NonConflictingTimesStrategy implements CalculationStrategy {
 			event.setStartMinute(interval.start.getMinuteOfHour());
 			event.setStartMonth(interval.start.getMonthOfYear());
 			event.setStartYear(interval.start.getYear());
-			System.out.println("Raw Offset is:" + interval.start.getZone().toTimeZone().getRawOffset());
-			System.out.println("Offset is:" + interval.start.getZone().toTimeZone().getRawOffset()/3600000);
 			
 			event.setTimeZoneOffset(interval.start.getZone().toTimeZone().getRawOffset()/3600000);
 			String[] userIDs = new String[this.userIDs.size()];
@@ -100,9 +93,8 @@ public class NonConflictingTimesStrategy implements CalculationStrategy {
 
 	private void addIntervalOnLeftIfNeeded(Set<Interval> freeIntervals,
 			Interval busyInterval, Interval freeInterval) {
-		if(freeInterval.end.isBefore(busyInterval.end)){
+		if(freeInterval.start.isBefore(busyInterval.start)){
 			Interval interval = new Interval(freeInterval.start, busyInterval.start);
-			System.out.println("New interval made: " + interval.toString());
 			freeIntervals.add(interval);
 		}
 	}
@@ -112,7 +104,6 @@ public class NonConflictingTimesStrategy implements CalculationStrategy {
 		if(busyInterval.end.isBefore(freeInterval.end)){
 			Interval interval = new Interval(busyInterval.end, freeInterval.end);
 			freeIntervals.add(interval);
-			System.out.println("New interval made: " + interval.toString());
 		}
 	}
 	
@@ -140,6 +131,13 @@ public class NonConflictingTimesStrategy implements CalculationStrategy {
 			this.start = start;
 			this.end = end;
 		}
+
+		@Override
+		public String toString() {
+			return "Interval [start=" + start + ", end=" + end + "]";
+		}
+		
+		
 	}
 	
 }

@@ -24,18 +24,13 @@ public class InclusiveTimeRangeStrategy implements CalculationStrategy {
 	@Override
 	public Schedule calculate(List<Schedule> schedules) {
 		List<CalendarEvent> calendarEvents = new ArrayList<>();
-		System.out.println("Min Time\t" + minTime.toString());
-		System.out.println("Max Time\t" + maxTime.toString());		
 		for(Schedule schedule : schedules){
 			for(CalendarEvent event: schedule.getEvents()){
 				DateTime startTime = builder.getDateTimeFromEndOfEvent(event);
 				DateTime endTime = builder.getDateTimeFromStartOfEvent(event);
-				System.out.println("StartTime\t" + startTime.toString());
-				System.out.println("EndTime\t" + endTime.toString());
 				if(!(endTime.isBefore(minTime) || maxTime.isBefore(startTime)) ){
 					event.setUserIds(userIDs);
 					calendarEvents.add(event);
-					System.out.println("Inclusive Time Range Strategy returning: " + event.toString());
 				}
 			}			
 		}
