@@ -10,12 +10,8 @@ import edu.oregonState.scheduler.data.CatalogDAO;
 import edu.oregonState.scheduler.data.UserDAO;
 import edu.oregonState.scheduler.model.ScheduleModel;
 import edu.oregonState.scheduler.model.calculation.CalculationStrategyFactory;
-<<<<<<< HEAD
 import edu.oregonState.scheduler.provider.CatalogScheduleProvider;
-=======
 import edu.oregonState.scheduler.provider.CompositeScheduleProvider;
->>>>>>> branch 'master' of https://github.com/travtarr/osu-scheduler.git
-import edu.oregonState.scheduler.provider.StubScheduleProvider;
 import edu.oregonState.scheduler.provider.google.authentication.GoogleCalendarAuthURLProvider;
 import edu.oregonState.scheduler.user.GoogleTokenProvider;
 import edu.oregonState.scheduler.user.User;

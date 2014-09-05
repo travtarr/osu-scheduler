@@ -1,10 +1,15 @@
 package edu.oregonState.scheduler;
 
+import java.util.EnumSet;
+
+import javax.servlet.DispatcherType;
+
 import org.skife.jdbi.v2.DBI;
 
 import edu.oregonState.scheduler.config.ConfigException;
 import edu.oregonState.scheduler.data.UserDAO;
 import edu.oregonState.scheduler.data.UserJDBIDAO;
+import edu.oregonState.scheduler.filter.FilterCrossDomain;
 import edu.oregonState.scheduler.health.TemplateHealthCheck;
 import edu.oregonState.scheduler.resources.GoogleAuthResource;
 import edu.oregonState.scheduler.resources.HelloWorldResource;
@@ -63,7 +68,11 @@ public class SchedulerApplication extends Application<SchedulerConfiguration> {
         environment.jersey().register(helloResource);
         environment.jersey().register(scheduleResource);
         environment.jersey().register(googleAuthResource);
-        environment.jersey().register(userResource);                
+        environment.jersey().register(userResource); 
+        
+        // filter
+        environment.getApplicationContext().addFilter(FilterCrossDomain.class, "/*", 
+        		EnumSet.of(DispatcherType.REQUEST, DispatcherType.ERROR));
     }
     
     private HibernateBundle<SchedulerConfiguration> hibernate = new HibernateBundle<SchedulerConfiguration>(User.class) {

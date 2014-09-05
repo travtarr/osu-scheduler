@@ -12,12 +12,12 @@ import edu.oregonState.scheduler.user.Authentication;
 
 public class CompositeScheduleProvider implements ScheduleProvider {
 	private final GoogleCalendarProvider googleCalendarProvider;
-	private final OSUCatalogScheduleProvider osuCatalogScheduleProvider;
+	private final CatalogScheduleProvider osuCatalogScheduleProvider;
 	
 	public CompositeScheduleProvider() throws ConfigException {
 		super();
 		googleCalendarProvider = new GoogleCalendarProvider(new ConfigFactory());
-		this.osuCatalogScheduleProvider = new OSUCatalogScheduleProvider();
+		this.osuCatalogScheduleProvider = new CatalogScheduleProvider();
 	}
 	
 	@Override

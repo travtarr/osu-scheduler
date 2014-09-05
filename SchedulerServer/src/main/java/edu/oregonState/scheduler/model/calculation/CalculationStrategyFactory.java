@@ -8,7 +8,7 @@ public class CalculationStrategyFactory {
 	public CalculationStrategy getCalculationStrategy(CalculationType calculationType, Schedule schedule){
 		switch (calculationType) {
 		case GivenTimeRangeAndUsersGetTimeSlotsAllAreAvailable:
-			return getGivenTimeRangeAndUsersGetTimeSlotsAllAreAvailable();
+			return getGivenTimeRangeAndUsersGetTimeSlotsAllAreAvailable(schedule.getEvents()[0]);
 		case GivenTimeRangeAndUsersGetUsersAvailableEntireTime:
 			return getGivenTimeRangeAndUsersGetUsersAvailableEntireTime(schedule.getEvents()[0]);
 		case GivenTimeRangeGetUsersSchedule:
@@ -31,8 +31,8 @@ public class CalculationStrategyFactory {
 		return new UsersAvailableInTimeRange(range);
 	}
 
-	private CalculationStrategy getGivenTimeRangeAndUsersGetTimeSlotsAllAreAvailable(){
-		return getStubCalculationStrategy();
+	private CalculationStrategy getGivenTimeRangeAndUsersGetTimeSlotsAllAreAvailable(CalendarEvent range){
+		return new NonConflictingTimesStrategy(range);
 	}
 	
 	private CalculationStrategy getStubCalculationStrategy(){
