@@ -2,8 +2,6 @@ package edu.oregonState.scheduler;
 
 import java.util.Properties;
 
-import org.hibernate.SessionFactory;
-
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
 import edu.oregonState.scheduler.config.ConfigException;

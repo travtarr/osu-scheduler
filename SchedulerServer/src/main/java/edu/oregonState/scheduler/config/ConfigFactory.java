@@ -33,3 +33,4 @@ public class ConfigFactory {
 		else
 			throw new ConfigException("Either clientID, redirectURI, secret or catalog was not found in config.properties");
 	}
+}
