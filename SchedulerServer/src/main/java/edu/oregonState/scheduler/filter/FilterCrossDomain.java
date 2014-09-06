@@ -28,7 +28,7 @@ public class FilterCrossDomain implements Filter{
         res.setHeader("Access-Control-Allow-Origin", "*");
         res.setHeader("Access-Control-Allow-Headers", "origin, content-type, accept, authorization");
         res.setHeader("Access-Control-Allow-Credentials", "true");
-        res.setHeader("Access-Control-Allow-Methods", "GET");
+        res.setHeader("Access-Control-Allow-Methods", "GET, POST");
         res.setHeader("Access-Control-Max-Age", "1209600");
         
         chain.doFilter(request,  response);

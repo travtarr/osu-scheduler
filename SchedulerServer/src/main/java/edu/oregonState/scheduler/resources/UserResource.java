@@ -56,9 +56,6 @@ public class UserResource implements UserAuthenticationRepository{
 		user.setGoogleToken(googleTokenProvider.getRefreshToken(user.getGoogleToken()));
 		userDAO.create(user);
     }
-	
-	
-	
 
 	@UnitOfWork
 	@GET

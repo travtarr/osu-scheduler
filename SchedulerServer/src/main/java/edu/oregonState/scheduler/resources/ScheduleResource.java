@@ -5,6 +5,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -46,6 +47,15 @@ public class ScheduleResource {
 		System.out.println("Schedule resource requested: " + schedule.toString());
 		return scheduleModel.calculateSchedule(calcType,schedule);//TODO: add input later
     }
-	
+
+	@POST @Path("/web")
+	@Timed
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+    public Schedule postProcessedScedule(Schedule schedule, @QueryParam("queryType") Optional<String> queryType) throws IOException {
+		CalculationType calcType = calcTypeMap.getCalculationType(queryType.get());
+		System.out.println("Schedule resource requested: " + schedule.toString());
+		return scheduleModel.calculateSchedule(calcType,schedule);//TODO: add input later
+    }
 
 }
