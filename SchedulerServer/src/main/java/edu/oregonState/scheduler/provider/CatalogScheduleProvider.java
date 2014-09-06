@@ -1,7 +1,7 @@
 package edu.oregonState.scheduler.provider;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.awt.List;
 import java.io.IOException;
 
 import org.joda.time.DateTime;
@@ -57,7 +57,7 @@ public class CatalogScheduleProvider implements ScheduleProvider {
 		String[][] results = sql.getSchedule(instructorName);
 		
 		CalendarEvent event = null;
-		List<CalendarEvent> calendarEvents = new ArrayList<>();
+		java.util.List<CalendarEvent> calendarEvents = new ArrayList<>();
 
 		/* Go through each event */
 		for (String[] single : results) {
@@ -191,8 +191,8 @@ public class CatalogScheduleProvider implements ScheduleProvider {
 
 		final String address = "localhost:3306";
 		final String dbName = "schedule";
-		final String username = "travis";
-		final String password = "5TB232ayq34q";
+		final String username = "root";
+		final String password = "8wP9Tn3245";
 
 		sql = new CatalogScheduleSQLProvider(username, password, address,
 				dbName);
@@ -205,7 +205,7 @@ public class CatalogScheduleProvider implements ScheduleProvider {
 		final String courseTable = "ctl00_ContentPlaceHolder1_SOCListUC1_gvOfferings";
 		String linkStr = null, courseName = "";
 		String[] linkStrSplit = null, whenSplit = null, dateSplit, timeSplit, valueList;
-		java.awt.List toStoreValues = new java.awt.List();
+		List toStoreValues = new List();
 		Element[] values = null;
 		String[][] listArray = null;
 		int listSize = 0;
@@ -309,10 +309,10 @@ public class CatalogScheduleProvider implements ScheduleProvider {
 	 *            hyperlink with course number
 	 * @return course number
 	 */
-	private java.awt.List getCourseNumbers(String subject) {
+	private List getCourseNumbers(String subject) {
 		final String courseNumURI = "http://catalog.oregonstate.edu/CourseList.aspx?subjectcode="
 				+ subject + "&level=undergrad&campus=corvallis";
-		java.awt.List courseNums = new java.awt.List();
+		List courseNums = new List();
 		String courseNum = null;
 
 		try {
@@ -341,10 +341,10 @@ public class CatalogScheduleProvider implements ScheduleProvider {
 	 * 
 	 * @return List of subjects (ex. MTH, BIO, ZOO)
 	 */
-	private java.awt.List getSubjectList() {
+	private List getSubjectList() {
 		final String courseListURI = "http://catalog.oregonstate.edu/CourseDescription.aspx?level=all&campus=corvallis";
 		final String subjTable = "ctl00_ContentPlaceHolder1_dlSubjects";
-		java.awt.List list = new java.awt.List();
+		List list =  new List();
 
 		try {
 			Document doc = Jsoup.connect(courseListURI).get();

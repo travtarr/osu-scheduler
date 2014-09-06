@@ -72,7 +72,8 @@ final public class MainFactory {
 	public static void storeCatalogSchedule() throws ConfigException {
 		System.out.println("Testing to see if we need to parse catalog.");
 		Properties props = (new ConfigFactory().getProperties());
-		if(props.getProperty(ConfigFactory.catalog) == "true"){
+		System.out.println("MAINFACTORY: catalog=" + props.getProperty(ConfigFactory.catalog));
+		if(props.getProperty(ConfigFactory.catalog).equals("true")){
 			System.out.println("Starting to parse catalog.");
 			CatalogScheduleProvider	csp = new CatalogScheduleProvider();
 			csp.parseSchedule();
