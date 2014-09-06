@@ -1,11 +1,7 @@
 package edu.oregonState.scheduler.provider.google.authentication;
 
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Properties;
-
-import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeRequestUrl;
 
 import edu.oregonState.scheduler.config.ConfigFactory;
 

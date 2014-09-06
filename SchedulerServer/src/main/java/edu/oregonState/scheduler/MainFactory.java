@@ -19,7 +19,6 @@ import edu.oregonState.scheduler.user.User;
 import edu.oregonState.scheduler.user.UserAuthenticationRepository;
 
 final public class MainFactory {
-	public static String catalog = "gatherCatalog";
 	public static ScheduleModel getScheduleModel(UserAuthenticationRepository repo) throws ConfigException{
 		return new ScheduleModel(repo, new CompositeScheduleProvider(), new CalculationStrategyFactory());
 	}
@@ -73,7 +72,7 @@ final public class MainFactory {
 	public static void storeCatalogSchedule() throws ConfigException {
 		System.out.println("Testing to see if we need to parse catalog.");
 		Properties props = (new ConfigFactory().getProperties());
-		if(props.getProperty(catalog) == "true"){
+		if(props.getProperty(ConfigFactory.catalog) == "true"){
 			System.out.println("Starting to parse catalog.");
 			CatalogScheduleProvider	csp = new CatalogScheduleProvider();
 			csp.parseSchedule();
