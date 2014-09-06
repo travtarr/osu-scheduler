@@ -33,7 +33,7 @@ public class UserResourceTest {
 	@Test
 	public void submitUserData_validInput_passesToScheduleModel() throws IOException {
 		//arrange
-		UserDTO userData = new UserDTO("davidsbr","bkdson","rkljg34QA_awef");
+		UserDTO userData = new UserDTO("davidsbr","bkdson","rkljg34QA_awef", "null");
 		
 		//act
 		target.submitUserData(userData);
